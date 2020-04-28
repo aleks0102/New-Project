@@ -1,0 +1,17 @@
+.homepage {
+    display: grid;
+    grid-template-areas: "s m";
+    grid-template-columns: 4fr 8fr;
+}
+
+.main {
+    grid-area: m;
+    margin: 0 10px;
+}
+
+.side {
+    grid-area: s;
+    border-right: 10px solid white;
+    background-color: cadetblue;
+    padding: 10px;
+}

@@ -1,0 +1,7 @@
+.but{
+    width: 300px;
+    height: 40px;
+    background-color: cadetblue;
+    border-radius: 24px;
+    font-weight: bold;
+}

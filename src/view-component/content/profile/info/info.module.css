@@ -1,0 +1,38 @@
+.info {
+    display: grid;
+    grid-template-areas: "a d";
+    grid-template-columns: 6fr 6fr;
+}
+
+.data {
+    grid-area: "d";
+    float: left;
+}
+
+.ava {
+    grid-area: "a";
+}
+
+
+.myposts {
+    padding-top: 20px;
+}
+
+.info li {
+    list-style: none;
+}
+
+.ava img {
+    width: 250px;
+    height: 250px;
+    border: 1px solid black;
+    border-radius: 100%;
+}
+
+.infoChange {
+    text-align: center;
+}
+
+li {
+    cursor: pointer;
+}

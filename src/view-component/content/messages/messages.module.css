@@ -1,0 +1,20 @@
+.messages {
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+    display: grid;
+    grid-template-areas: "m a";
+    grid-template-columns: 6fr 6fr;
+}
+
+ h3{
+    font-size: 32px;
+}
+
+.addMessage {
+    grid-area: "a";
+}
+
+.myMessages {
+    grid-area: "m";
+}
