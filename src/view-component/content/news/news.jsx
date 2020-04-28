@@ -8,17 +8,11 @@ import {
   SetDataAC,
   setCurrentPageAC,
 } from "../../../actions/news-actions";
-import axios from "axios";
+import { getNews } from "../../../news-ajax";
 
 const News = (props) => {
   useEffect(() => {
-    const fetchPosts = async () => {
-      const result = await axios.get(
-        "https://jsonplaceholder.typicode.com/posts"
-      );
-      setNews(result.data);
-    };
-    fetchPosts();
+    getNews(setNews);
   }, []);
 
   let setNews = (news) => {
