@@ -11,13 +11,13 @@ import {
 import { getNews } from "../../../news-ajax";
 
 const News = (props) => {
-  useEffect(() => {
-    getNews(setNews);
-  }, []);
-
   let setNews = (news) => {
     props.SetData(news);
   };
+
+  useEffect(() => {
+    getNews(setNews);
+  }, []);
 
   let Show = (id) => {
     props.Show(id);
