@@ -8,6 +8,6 @@
   padding: 20px;
   cursor: pointer;
   text-decoration-style: solid;
-  color: blue;
   font-size: 33px;
+  text-decoration: underline;
 }
