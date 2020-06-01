@@ -1,38 +1,39 @@
 .info {
-    display: grid;
-    grid-template-areas: "a d";
-    grid-template-columns: 6fr 6fr;
+  display: grid;
+  grid-template-areas: "a d";
+  grid-template-columns: 6fr 6fr;
 }
 
 .data {
-    grid-area: "d";
-    float: left;
+  grid-area: "d";
+  float: left;
 }
 
 .ava {
-    grid-area: "a";
+  grid-area: "a";
+  text-align: center;
 }
 
-
 .myposts {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 
 .info li {
-    list-style: none;
+  list-style: none;
 }
 
 .ava img {
-    width: 250px;
-    height: 250px;
-    border: 1px solid black;
-    border-radius: 100%;
+  width: 250px;
+  height: 250px;
+  border: 1px solid black;
+  border-radius: 100%;
+  margin-left: 20px;
 }
 
 .infoChange {
-    text-align: center;
+  text-align: center;
 }
 
 li {
-    cursor: pointer;
+  cursor: pointer;
 }

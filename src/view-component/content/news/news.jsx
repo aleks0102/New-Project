@@ -1,31 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./news.module.css";
-import SmallButton from "../../../components/small-button/small-button";
 import { connect } from "react-redux";
-import {
-  ShowAC,
-  HideAC,
-  SetDataAC,
-  setCurrentPageAC,
-} from "../../../actions/news-actions";
-import { getNews } from "../../../news-ajax";
+import { SetDataAC, setCurrentPageAC } from "../../../actions/news-actions";
+import Components from "../../../components/components";
+import { Redirect } from "react-router-dom";
 
 const News = (props) => {
-  let setNews = (news) => {
-    props.SetData(news);
-  };
+  let [isShowed, changeShow] = useState(null);
+  let isAutorized = props.isAutorized;
 
   useEffect(() => {
-    getNews(setNews);
+    if (props.news.length == 0) {
+      let setNews = (news) => {
+        props.SetData(news);
+      };
+      Components.getNews(setNews);
+    }
   }, []);
-
-  let Show = (id) => {
-    props.Show(id);
-  };
-
-  let Hide = (id) => {
-    props.Hide(id);
-  };
 
   let news = props.news;
   let currentPage = props.currentPage;
@@ -35,52 +26,35 @@ const News = (props) => {
   let currentPosts = news.slice(indexOfFirst, indexOfLast);
   let pagination = (pageNumber) => props.setCurrentPage(pageNumber);
 
-  return (
-    <div className={style.news}>
-      <h3>Last news:</h3>
-      <h4>Select page:</h4>
-      <SelectPage
-        totalNews={news.length}
-        pageSize={pageSize}
-        pagination={pagination}
-      />
-      {currentPosts.map((element) => (
-        <div key={element.id}>
-          <h2>{element.title}</h2>
-          {element.isShowed ? (
-            <div>
-              <SmallButton onClick={() => Hide(element.id)} text={"Hide"} />
-              <p>{element.body}</p>
-            </div>
-          ) : (
-            <SmallButton text={"Show all"} onClick={() => Show(element.id)} />
-          )}
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const SelectPage = ({ pageSize, totalNews, pagination }) => {
-  const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(totalNews / pageSize); i++) {
-    pageNumbers.push(i);
-  }
-  return (
-    <nav>
-      <ul>
-        {pageNumbers.map((num) => (
-          <span
-            className={style.pages}
-            key={num}
-            onClick={() => pagination(num)}
-          >
-            {num}
-          </span>
+  if (isAutorized == true) {
+    return (
+      <div className={style.news}>
+        <h3>Last news:</h3>
+        <h4>Select page:</h4>
+        <Components.SelectPage
+          totalNews={news.length}
+          pageSize={pageSize}
+          pagination={pagination}
+        />
+        {currentPosts.map((element) => (
+          <div key={element.id}>
+            <h2 className={style.show} onClick={() => changeShow(true)}>
+              {element.title.slice(0, 30) + "..."}
+            </h2>
+            {isShowed ? (
+              <div>
+                <Components.NewsModal
+                  title={element.title}
+                  body={element.body}
+                  onClick={() => changeShow((isShowed = false))}
+                />
+              </div>
+            ) : null}
+          </div>
         ))}
-      </ul>
-    </nav>
-  );
+      </div>
+    );
+  } else return <Redirect to="/login" />;
 };
 
 const mapStateToProps = (state) => {
@@ -88,13 +62,12 @@ const mapStateToProps = (state) => {
     news: state.newsPage.news,
     currentPage: state.newsPage.currentPage,
     pageSize: state.newsPage.pageSize,
+    isAutorized: state.userData.isAutorized,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    Show: (id) => dispatch(ShowAC(id)),
-    Hide: (id) => dispatch(HideAC(id)),
     SetData: (news) => dispatch(SetDataAC(news)),
     setCurrentPage: (currentPage) => dispatch(setCurrentPageAC(currentPage)),
   };

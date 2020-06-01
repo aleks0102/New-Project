@@ -1,7 +1,15 @@
-import { ADD_POST, SHOW, CHANGE_BODY } from "../actions/post-actions";
+import { ADD_POST, CHANGE_TEXT } from "../actions/post-actions";
+import { CHANGE_AVA, CHANGE_USER } from "../actions/info-action";
 
 let initialState = {
   posts: [],
+  info: {
+    name: "",
+    lastname: "",
+    phone: "",
+    email: "",
+  },
+  avatar: null,
 };
 
 const ProfileReducer = (state = initialState, action) => {
@@ -20,28 +28,36 @@ const ProfileReducer = (state = initialState, action) => {
       };
     }
 
-    case CHANGE_BODY:
+    case CHANGE_TEXT:
       return {
         ...state,
         posts: state.posts.map((p) => {
           if (p.id === action.id) {
-            return { ...p, body: action.payload.body, isShowed: false };
+            return {
+              ...p,
+              title: action.payload.title ? action.payload.title : p.title,
+              body: action.payload.body ? action.payload.body : p.body,
+              isShowed: false,
+            };
           }
           return p;
         }),
       };
 
-    case SHOW:
+    case CHANGE_USER:
       return {
         ...state,
-        posts: state.posts.map((p) => {
-          if (p.id === action.id) {
-            return { ...p, isShowed: true };
-          }
-
-          return p;
-        }),
+        info: {
+          name: action.payload.user.name,
+          lastname: action.payload.user.lastname,
+          phone: action.payload.user.phone,
+          email: action.payload.user.email,
+        },
       };
+
+    case CHANGE_AVA:
+      return { ...state, avatar: action.payload.avatar };
+
     default:
       return state;
   }

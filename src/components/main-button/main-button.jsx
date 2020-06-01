@@ -1,13 +1,12 @@
 import React from "react";
-import style from "./main-button.module.css"
+import style from "./main-button.module.css";
 
-const MainButton = props => {
-    return(
-        <div>
-            <h2>{props.title}</h2>
-            <button className={style.but} onClick={props.onSubmit}>{props.text}</button>
-        </div>
-    )
+const MainButton = (props) => {
+  return (
+    <button className={style.but} onClick={props.onSubmit}>
+      {props.text}
+    </button>
+  );
 };
 
 export default MainButton;

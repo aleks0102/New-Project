@@ -4,14 +4,14 @@ import style from "./main-textarea.module.css";
 const MainTextArea = (props) => {
   return (
     <div>
-      <legend>Input {props.text}:</legend>
+      <legend>{props.text}</legend>
       <textarea
         name={props.name}
         value={props.value}
         type={props.type}
         onChange={props.onChange}
         maxLength={props.maxLength}
-        ref={props.refs}
+        defaultValue={props.defaultValue}
       ></textarea>
     </div>
   );

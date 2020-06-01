@@ -1,12 +1,10 @@
 .news {
-    margin: 0 auto;
-    padding: 10px;
-    text-align: center;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
 }
 
-.pages {
-    margin: 10px;
-    cursor: pointer;
-    font-size: 30px;
-    font-weight: bold;
+.show {
+  cursor: pointer;
+  margin: 50px;
 }

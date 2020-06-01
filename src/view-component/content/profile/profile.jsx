@@ -1,18 +1,17 @@
 import React from "react";
 import style from "./profile.module.css";
-import { Redirect } from "react-router-dom";
-import Posts from "./posts/posts";
-import Info from "./info/info";
+import Components from "../../../components/components";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 const Profile = (props) => {
-  let login = props.login;
-  let password = props.password;
-  if (login === "Admin" && password === "12345") {
+  let isAutorized = props.isAutorized;
+  if (isAutorized == true) {
     return (
       <div className={style.profile}>
-        <Info />
-        <Posts />
+        <Components.Info />
+        <Components.AddPost />
+        <Components.MyPosts />
       </div>
     );
   } else return <Redirect to="/login" />;
@@ -20,9 +19,8 @@ const Profile = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    login: state.loginPage.user.login,
-    password: state.loginPage.user.password,
+    isAutorized: state.userData.isAutorized,
   };
 };
 
-export default connect(mapStateToProps, null)(Profile);
+export default connect(mapStateToProps)(Profile);

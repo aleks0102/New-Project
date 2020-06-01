@@ -4,14 +4,17 @@ import style from "./main-input.module.css";
 const MainInput = (props) => {
   return (
     <div>
-      <legend>Input {props.text}:</legend>
+      <label>
+        {props.labelText ? props.labelText + ": " + props.text : props.text}
+      </label>
       <input
+        required=""
         name={props.name}
-        value={props.value}
+        defaultValue={props.defaultValue}
         type={props.type}
         onChange={props.onChange}
         maxLength={props.maxLength}
-        ref={props.refs}
+        value={props.value}
       />
     </div>
   );

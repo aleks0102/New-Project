@@ -1,42 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./login.module.css";
-import MainButton from "../../../components/main-button/main-button";
-import { Redirect } from "react-router-dom";
-import MainInput from "../../../components/main-input/main-input";
+import { Redirect, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { loggedInAC } from "../../../actions/login-action";
+import { logIn } from "../../../actions/login-action";
+import Components from "../../../components/components";
 
 const Login = (props) => {
-  let login = props.login;
-  let password = props.password;
-  let LoginValue = React.createRef();
-  let PassValue = React.createRef();
+  let isAutorized = props.isAutorized;
+  let [login, getLogin] = useState();
+  let [pass, getPass] = useState();
+  let [showRegistration, changeShow] = useState(false);
 
-  const loggedIn = () => {
-    let newLogin = LoginValue.current.value;
-    let newPassword = PassValue.current.value;
-    props.logIn(newLogin, newPassword);
+  const logIn = () => {
+    props.logIn(login, pass);
   };
 
-  if (login === "Admin" && password === "12345") {
+  if (isAutorized == true) {
     return <Redirect to="/profile" />;
   } else {
     return (
       <div className={style.loggedin}>
-        <h2>Logged in</h2>
-        <MainInput
+        {showRegistration ? (
+          <Components.Registration
+            onClick={() => changeShow((showRegistration = false))}
+          />
+        ) : null}
+        <h2>Login</h2>
+        <Components.MainInput
           name="login"
           type="text"
           text={"Your Name"}
-          refs={LoginValue}
+          onChange={(e) => getLogin((login = e.target.value))}
         />
-        <MainInput
+        <Components.MainInput
           name="pass"
           type="password"
           text={"Your pass"}
-          refs={PassValue}
+          onChange={(e) => getPass((pass = e.target.value))}
         />
-        <MainButton text="LoggedIn" onSubmit={loggedIn} />
+        <Components.MainButton text="Log in" onSubmit={logIn} />{" "}
+        <p
+          className={style.toReg}
+          onClick={() => changeShow((showRegistration = true))}
+        >
+          Or click to: Registration
+        </p>
       </div>
     );
   }
@@ -44,14 +52,13 @@ const Login = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    login: state.loginPage.user.login,
-    password: state.loginPage.user.password,
+    isAutorized: state.userData.isAutorized,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logIn: (login, password) => dispatch(loggedInAC(login, password)),
+    logIn: (login, password) => dispatch(logIn(login, password)),
   };
 };
 
