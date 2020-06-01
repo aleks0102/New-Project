@@ -15,32 +15,32 @@ const Header = (props) => {
   };
   return (
     <ul className={style.pages}>
-      {showModal ? (
-        <Components.LogOutModal
-          onClick={() => changeShow((showModal = false))}
-          onSubmit={logOut}
-          body={"Do you want to log out?"}
-        />
+      {isAutorized ? (
+        <div>
+          {showModal ? (
+            <Components.LogOutModal
+              onClick={() => changeShow((showModal = false))}
+              onSubmit={logOut}
+              body={"Do you want to log out?"}
+            />
+          ) : null}
+          <NavLink to="/">
+            <li>Home</li>
+          </NavLink>
+          <NavLink to="/profile">
+            <li>Profile</li>
+          </NavLink>
+          <NavLink to="/messages">
+            <li>Messages</li>
+          </NavLink>
+          <NavLink to="/news">
+            <li>News</li>
+          </NavLink>
+          <NavLink to="/login">
+            <li onClick={() => changeShow((showModal = true))}>Logout</li>
+          </NavLink>
+        </div>
       ) : null}
-      <NavLink to={isAutorized ? "/" : "/login"}>
-        <li>Home</li>
-      </NavLink>
-      <NavLink to={isAutorized ? "/profile" : "/login"}>
-        <li>Profile</li>
-      </NavLink>
-      <NavLink to={isAutorized ? "/messages" : "/login"}>
-        <li>Messages</li>
-      </NavLink>
-      <NavLink to={isAutorized ? "/news" : "/login"}>
-        <li>News</li>
-      </NavLink>
-      <NavLink to="/login">
-        {isAutorized ? (
-          <li onClick={() => changeShow((showModal = true))}>Logout</li>
-        ) : (
-          <li>Login</li>
-        )}
-      </NavLink>
     </ul>
   );
 };
