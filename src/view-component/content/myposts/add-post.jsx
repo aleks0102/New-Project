@@ -1,33 +1,31 @@
 import React, { useState } from "react";
-import style from "../profile.module.css";
+import style from "./mypost.module.css";
 import { connect } from "react-redux";
-import { addPost } from "../../../../actions/post-actions";
-import Components from "../../../../components/components";
+import { addPost } from "../../../actions/post-actions";
+import Components from "../../../components/components";
 
 const AddPost = (props) => {
-  let [title, getTitle] = useState();
-  let [body, getBody] = useState();
+  let [newPost, getnewPost] = useState({});
 
   let addPost = () => {
-    props.addPost(title, body);
-    getTitle((title = " "));
-    getBody((body = " "));
+    props.addPost(newPost);
+    getnewPost({ ...newPost, title: " ", body: " " });
   };
 
   return (
     <div className={style.myposts}>
       <h2>Add post</h2>
       <Components.MainTextArea
-        onChange={(e) => getTitle((title = e.target.value))}
+        onChange={(p) => getnewPost({ ...newPost, title: p })}
         text={"Post Title"}
         maxLength="50"
-        value={title}
+        value={newPost.title}
       />
       <Components.MainTextArea
-        onChange={(e) => getBody((body = e.target.value))}
+        onChange={(p) => getnewPost({ ...newPost, body: p })}
         text={"Post Body"}
         maxLength="200"
-        value={body}
+        value={newPost.body}
       />
       <Components.MainButton onSubmit={addPost} text={"Add"} />
     </div>

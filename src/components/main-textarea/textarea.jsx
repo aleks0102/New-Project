@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./main-textarea.module.css";
 
 const MainTextArea = (props) => {
+  let onChange = (e) => {
+    let p = e.target.value;
+    props.onChange(p);
+  };
+
   return (
     <div>
       <legend>{props.text}</legend>
@@ -9,9 +14,8 @@ const MainTextArea = (props) => {
         name={props.name}
         value={props.value}
         type={props.type}
-        onChange={props.onChange}
+        onChange={onChange}
         maxLength={props.maxLength}
-        defaultValue={props.defaultValue}
       ></textarea>
     </div>
   );

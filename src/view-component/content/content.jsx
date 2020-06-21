@@ -2,9 +2,8 @@ import React from "react";
 import style from "./content.module.css";
 import { Route, Switch, withRouter } from "react-router-dom";
 import Components from "../../components/components";
-import { connect } from "react-redux";
 
-const Content = (props) => {
+const Content = () => {
   return (
     <Switch>
       <Route exact path="/">
@@ -12,6 +11,9 @@ const Content = (props) => {
       </Route>
       <Route path="/profile">
         <Components.Profile />
+      </Route>
+      <Route path="/posts">
+        <Components.MyPosts />
       </Route>
       <Route path="/messages">
         <Components.Messages />

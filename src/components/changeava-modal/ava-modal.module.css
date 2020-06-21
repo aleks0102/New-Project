@@ -8,7 +8,7 @@
   display: block;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.041);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .modalWin {
@@ -17,10 +17,18 @@
   background: #fff;
   display: block;
   min-height: 300px;
-  margin: 0, auto;
+  margin: 10px, auto;
+  padding: 40px;
   position: fixed;
-  top: 33%;
+  text-align: center;
+  top: 20%;
   left: 33%;
   width: 500px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+img {
+  width: 250px;
+  height: 250px;
+  border-radius: 100%;
 }

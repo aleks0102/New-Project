@@ -1,6 +1,42 @@
-.profile {
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-    font-size: 120%;
+.info {
+  display: grid;
+  grid-template-areas: "a d";
+  grid-template-columns: 6fr 6fr;
+  align-items: start;
+  text-align: center;
+  padding: 30px;
+}
+
+.data {
+  grid-area: "d";
+  float: left;
+}
+
+.ava {
+  grid-area: "a";
+  text-align: center;
+}
+
+.myposts {
+  padding-top: 20px;
+}
+
+.info li {
+  list-style: none;
+}
+
+.ava img {
+  width: 250px;
+  height: 250px;
+  border: 1px solid black;
+  border-radius: 100%;
+  margin-left: 20px;
+}
+
+.infoChange {
+  text-align: center;
+}
+
+li {
+  cursor: pointer;
 }

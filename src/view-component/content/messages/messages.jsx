@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import style from "./messages.module.css";
-import { addMessageAC } from "../../../actions/dialog-actions";
 import { connect } from "react-redux";
 import AllComponents from "../../../components/components";
 import { Redirect } from "react-router-dom";
+import { addMessageAC } from "../../../actions/messages-actions";
+import { saveMessages } from "../../../service/setMessages";
 
 const Messages = (props) => {
   let messages = props.messages;
-  let [user, getUser] = useState();
-  let [text, getText] = useState();
+  saveMessages(messages);
+  let [newMessage, getnewMessage] = useState({});
   let isAutorized = props.isAutorized;
 
   const addMessage = () => {
-    props.addMessage(user, text);
-    getUser((user = " "));
-    getText((text = " "));
+    props.addMessage(newMessage);
+    getnewMessage({ ...newMessage, user: " ", text: " " });
   };
 
   if (isAutorized == true) {
@@ -23,14 +23,14 @@ const Messages = (props) => {
         <div className={style.addMessage}>
           <h3>Add new message:</h3>
           <AllComponents.MainInput
-            onChange={(e) => getUser((user = e.target.value))}
+            onChange={(p) => getnewMessage({ ...newMessage, user: p })}
             text={"user"}
-            value={user}
+            value={newMessage.user}
           />
           <AllComponents.MainTextArea
-            onChange={(e) => getText((text = e.target.value))}
+            onChange={(p) => getnewMessage({ ...newMessage, text: p })}
             text={"message text"}
-            value={text}
+            value={newMessage.text}
           />
           <AllComponents.MainButton text={"Add"} onSubmit={addMessage} />
         </div>
@@ -49,8 +49,8 @@ const Messages = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    messages: state.dialogPage.messages,
-    isAutorized: state.userData.isAutorized,
+    messages: state.messagesPage.messages,
+    isAutorized: state.authData.isAutorized,
   };
 };
 

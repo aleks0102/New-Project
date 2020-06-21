@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import style from "./post-modal.module.css";
 import { connect } from "react-redux";
@@ -7,35 +7,30 @@ import Components from "../components";
 
 const PostModal = (props) => {
   let modalPost = document.querySelector(".app-wraper");
-
-  let [newTitle, getTitle] = useState();
-  let [newBody, getBody] = useState();
+  let post = props.post;
+  let [newPost, getnewPost] = useState(post);
 
   let changeText = (id) => {
-    if (newTitle != props.title) {
-      props.changeText(id, newTitle, newBody);
-    }
+    props.changeText(id, newPost);
   };
 
   return ReactDOM.createPortal(
     <div className={style.modalBg} onClick={props.onClick}>
       <div className={style.modalWin} onClick={(e) => e.stopPropagation()}>
-        <span className={style.close} onClick={props.onClick}>
-          X
-        </span>
+        <Components.Close onClick={props.onClick} />
         <h2> {props.title}</h2>
         <Components.MainTextArea
-          onChange={(e) => getTitle((newTitle = e.target.value))}
-          defaultValue={props.title}
+          onChange={(p) => getnewPost({ ...newPost, title: p })}
+          value={newPost.title}
         />
         <p>{props.body}</p>
         <Components.MainTextArea
-          onChange={(e) => getBody((newBody = e.target.value))}
-          defaultValue={props.body}
+          onChange={(p) => getnewPost({ ...newPost, body: p })}
+          value={newPost.body}
         />
         <Components.MainButton
           text={"Change"}
-          onSubmit={() => changeText(props.id)}
+          onSubmit={() => changeText(newPost.id)}
         />
       </div>
     </div>,
@@ -45,7 +40,7 @@ const PostModal = (props) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    changeText: (id, title, body) => dispatch(changeText(id, title, body)),
+    changeText: (id, newPost) => dispatch(changeText(id, newPost)),
   };
 };
 

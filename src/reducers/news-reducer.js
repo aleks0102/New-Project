@@ -3,7 +3,7 @@ import { SET_DATA, SET_CURRENT_PAGE } from "../actions/news-actions";
 let initialState = {
   news: [],
   pageSize: 10,
-  currentPage: 3,
+  currentPage: 1,
 };
 
 const NewsReducer = (state = initialState, action) => {

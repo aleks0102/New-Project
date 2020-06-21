@@ -6,10 +6,10 @@ let initialState = {
     login: null,
     password: null,
   },
-  isAutorized: false,
+  isAutorized: true,
 };
 
-const UserReducer = (state = initialState, action) => {
+const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
     case REGISTRATION:
       return {
@@ -25,8 +25,8 @@ const UserReducer = (state = initialState, action) => {
       return {
         ...state,
         isAutorized:
-          action.payload.login == state.user.login &&
-          action.payload.password == state.user.password
+          action.payload.user.login == state.user.login &&
+          action.payload.user.password == state.user.password
             ? true
             : false,
       };
@@ -42,4 +42,4 @@ const UserReducer = (state = initialState, action) => {
   }
 };
 
-export default UserReducer;
+export default AuthReducer;

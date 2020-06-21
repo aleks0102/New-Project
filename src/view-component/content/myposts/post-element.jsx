@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
-import "./mypost.module.css";
-import Components from "../../../../components/components";
+import style from "./mypost.module.css";
+import Components from "../../../components/components";
 
 const PostElement = (props) => {
   let [isShowed, toggleShow] = useState(false);
@@ -16,9 +15,7 @@ const PostElement = (props) => {
           {isShowed ? (
             <div>
               <Components.PostModal
-                id={post.id}
-                title={post.title}
-                body={post.body}
+                post={post}
                 onClick={() => toggleShow((isShowed = false))}
               />
             </div>

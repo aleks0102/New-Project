@@ -6,7 +6,6 @@ import Components from "../../../components/components";
 import { Redirect } from "react-router-dom";
 
 const News = (props) => {
-  let [isShowed, changeShow] = useState(null);
   let isAutorized = props.isAutorized;
 
   useEffect(() => {
@@ -30,28 +29,18 @@ const News = (props) => {
     return (
       <div className={style.news}>
         <h3>Last news:</h3>
+        {currentPosts.map((elem) => (
+          <div key={elem.id}>
+            <Components.NewsElement elem={elem} />
+          </div>
+        ))}
         <h4>Select page:</h4>
         <Components.SelectPage
           totalNews={news.length}
           pageSize={pageSize}
           pagination={pagination}
+          currentPage={currentPage}
         />
-        {currentPosts.map((element) => (
-          <div key={element.id}>
-            <h2 className={style.show} onClick={() => changeShow(true)}>
-              {element.title.slice(0, 30) + "..."}
-            </h2>
-            {isShowed ? (
-              <div>
-                <Components.NewsModal
-                  title={element.title}
-                  body={element.body}
-                  onClick={() => changeShow((isShowed = false))}
-                />
-              </div>
-            ) : null}
-          </div>
-        ))}
       </div>
     );
   } else return <Redirect to="/login" />;
@@ -62,7 +51,7 @@ const mapStateToProps = (state) => {
     news: state.newsPage.news,
     currentPage: state.newsPage.currentPage,
     pageSize: state.newsPage.pageSize,
-    isAutorized: state.userData.isAutorized,
+    isAutorized: state.authData.isAutorized,
   };
 };
 

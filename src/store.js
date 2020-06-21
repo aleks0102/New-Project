@@ -1,26 +1,29 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import ProfileReducer from "./reducers/profile-reducer";
-import DialogReducer from "./reducers/dialog-reducer";
+import MessagesReducer from "./reducers/messages-reducer";
 import NewsReducer from "./reducers/news-reducer";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { saveState, loadState } from "./localstorage";
-import UserReducer from "./reducers/user-reducer";
+import AuthReducer from "./reducers/auth-reducer";
+import PostsReducer from "./reducers/posts-reducer";
 
 let reducers = combineReducers({
   profilePage: ProfileReducer,
-  dialogPage: DialogReducer,
+  messagesPage: MessagesReducer,
   newsPage: NewsReducer,
-  userData: UserReducer,
+  authData: AuthReducer,
+  postsData: PostsReducer,
 });
 
-const persistedState = loadState();
+// const persistedState = loadState();
 
 let store = createStore(
   reducers,
-   persistedState,
+  // persistedState,
   applyMiddleware(logger, thunk)
 );
-store.subscribe(() => saveState(store.getState()));
+// store.subscribe(() => saveState(store.getState()));
+store.subscribe(() => store.getState());
 
 export default store;

@@ -30,6 +30,9 @@ const Header = (props) => {
           <NavLink to="/profile">
             <li>Profile</li>
           </NavLink>
+          <NavLink to="/posts">
+            <li>Posts</li>
+          </NavLink>
           <NavLink to="/messages">
             <li>Messages</li>
           </NavLink>
@@ -47,7 +50,7 @@ const Header = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    isAutorized: state.userData.isAutorized,
+    isAutorized: state.authData.isAutorized,
   };
 };
 

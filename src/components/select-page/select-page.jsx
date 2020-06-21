@@ -7,18 +7,16 @@ export const SelectPage = (props) => {
     pageNumbers.push(i);
   }
   return (
-    <nav>
-      <ul>
-        {pageNumbers.map((num) => (
-          <span
-            className={style.pages}
-            key={num}
-            onClick={() => props.pagination(num)}
-          >
-            {num}
-          </span>
-        ))}
-      </ul>
-    </nav>
+    <ul>
+      {pageNumbers.map((num) => (
+        <span
+          className={props.currentPage == num ? style.new : style.pages}
+          key={num}
+          onClick={() => props.pagination(num)}
+        >
+          {num}
+        </span>
+      ))}
+    </ul>
   );
 };

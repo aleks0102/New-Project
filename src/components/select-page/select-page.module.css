@@ -1,6 +1,14 @@
 .pages {
   margin: 10px;
   cursor: pointer;
+  font-size: 22px;
+  font-weight: solid;
+}
+
+.new {
+  color: black;
+  margin: 10px;
+  cursor: pointer;
   font-size: 30px;
   font-weight: bold;
 }
