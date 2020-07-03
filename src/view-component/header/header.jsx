@@ -15,15 +15,15 @@ const Header = (props) => {
   };
   return (
     <ul className={style.pages}>
-      {isAutorized ? (
+      {/* {isAutorized ? ( */}
         <div>
-          {showModal ? (
+          {/* {showModal ? (
             <Components.LogOutModal
               onClick={() => changeShow((showModal = false))}
               onSubmit={logOut}
               body={"Do you want to log out?"}
             />
-          ) : null}
+          ) : null} */}
           <NavLink to="/">
             <li>Home</li>
           </NavLink>
@@ -43,7 +43,7 @@ const Header = (props) => {
             <li onClick={() => changeShow((showModal = true))}>Logout</li>
           </NavLink>
         </div>
-      ) : null}
+      {/* ) : null} */}
     </ul>
   );
 };

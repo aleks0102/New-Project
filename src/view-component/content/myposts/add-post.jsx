@@ -6,7 +6,6 @@ import Components from "../../../components/components";
 
 const AddPost = (props) => {
   let [newPost, getnewPost] = useState({});
-
   let addPost = () => {
     props.addPost(newPost);
     getnewPost({ ...newPost, title: " ", body: " " });
@@ -31,10 +30,11 @@ const AddPost = (props) => {
     </div>
   );
 };
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    addPost: (title, body) => dispatch(addPost(title, body)),
+    addPost: (post) => {
+      dispatch(addPost(post));
+    },
   };
 };
 

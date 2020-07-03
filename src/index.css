@@ -41,6 +41,6 @@ code {
 .content {
   margin: 10px;
   border-radius: 16px;
-  background-color: lightgray;
+  background-color: rgb(245, 245, 245);
   grid-area: c;
 }

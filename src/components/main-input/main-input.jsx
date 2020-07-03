@@ -10,7 +10,7 @@ const MainInput = (props) => {
   return (
     <div>
       <label>{props.text}</label>
-      {props.required == true && props.value == "" ? (
+      {props.required == true && (props.value == "" || props.value == null) ? (
         <span className={style.valid}>Required</span>
       ) : null}
       <input

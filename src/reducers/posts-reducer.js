@@ -1,6 +1,5 @@
 import { ADD_POST, CHANGE_TEXT } from "../actions/post-actions";
-import { loadPosts, savePosts } from "../get-queries/setPosts";
-
+import { loadPosts } from "../service/setPosts";
 const loadedPosts = loadPosts();
 
 let initialState = {
@@ -17,7 +16,7 @@ const PostsReducer = (state = initialState, action) => {
             id: state.posts.length + 1,
             title: action.payload.post.title,
             body: action.payload.post.body,
-            date: new Date().toLocaleTimeString(),
+            date: new Date().toLocaleString(),
           },
         ]),
       };

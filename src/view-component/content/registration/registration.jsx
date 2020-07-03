@@ -18,17 +18,19 @@ const Registration = (props) => {
     ) {
       props.registration(newUser);
       props.onClick();
-    } else alert("Passwords do not match or some fields are empty");
+    } else return null;
   };
 
   return ReactDOM.createPortal(
     <div className={style.wrap} onClick={props.onClick}>
       <div className={style.form} onClick={(e) => e.stopPropagation()}>
+        <Components.Close onClick={props.onClick} />
         <h2>Registration</h2>
         <Components.MainInput
           text={"Enter your login"}
           onChange={(p) => setNewUser({ ...newUser, login: p })}
           value={newUser.login}
+          required
         />
         <Components.MainInput
           text={"Enter your password"}
@@ -36,6 +38,7 @@ const Registration = (props) => {
           required={newUser.password == ""}
           onChange={(p) => setNewUser({ ...newUser, password: p })}
           value={newUser.password}
+          required
         />
         <Components.MainInput
           text={"Submit password"}
@@ -43,6 +46,7 @@ const Registration = (props) => {
           required={newUser.password == ""}
           onChange={(p) => setNewUser({ ...newUser, passСonfirm: p })}
           value={newUser.passСonfirm}
+          required
         />
         <Components.MainButton text={"Save"} onSubmit={registration} />
       </div>

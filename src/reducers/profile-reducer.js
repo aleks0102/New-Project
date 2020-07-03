@@ -2,10 +2,10 @@ import { CHANGE_AVA, CHANGE_USER, DELETE_AVA } from "../actions/profile-action";
 
 let initialState = {
   user: {
-    name: null,
-    lastname: null,
-    phone: null,
-    email: null,
+    name: "",
+    lastname: "",
+    phone: "",
+    email: "",
   },
   avatar: null,
 };

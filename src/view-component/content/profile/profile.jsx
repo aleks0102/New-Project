@@ -9,12 +9,20 @@ const Profile = (props) => {
   let avatar = props.avatar;
   let [newUser, setUser] = useState(user);
   let [modalShow, changeShow] = useState(false);
-
+  let [valid, changeValid] = useState(null);
   const changeUser = () => {
-    props.changeUser(newUser);
+    for (let k in newUser) {
+      if (newUser[k] != "") {
+        changeValid((valid = true));
+      } else {
+        changeValid((valid = false));
+        break;
+      }
+    }
+    if (valid == true) props.changeUser(newUser);
   };
 
-  let isAutorized = props.isAutorized;
+  // let isAutorized = props.isAutorized;
   // if (isAutorized == true) {
   return (
     <div className={style.info}>
@@ -57,6 +65,7 @@ const Profile = (props) => {
           onChange={(p) => setUser({ ...newUser, email: p })}
           text={"Email"}
           value={newUser.email}
+          required
         />
         <Components.MainButton text={"Save"} onSubmit={changeUser} />
       </div>

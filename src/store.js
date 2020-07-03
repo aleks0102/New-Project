@@ -7,6 +7,7 @@ import logger from "redux-logger";
 import { saveState, loadState } from "./localstorage";
 import AuthReducer from "./reducers/auth-reducer";
 import PostsReducer from "./reducers/posts-reducer";
+import UsersReducer from "./reducers/users-reducer";
 
 let reducers = combineReducers({
   profilePage: ProfileReducer,
@@ -14,6 +15,7 @@ let reducers = combineReducers({
   newsPage: NewsReducer,
   authData: AuthReducer,
   postsData: PostsReducer,
+  userData: UsersReducer,
 });
 
 // const persistedState = loadState();

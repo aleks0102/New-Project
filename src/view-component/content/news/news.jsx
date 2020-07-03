@@ -25,25 +25,25 @@ const News = (props) => {
   let currentPosts = news.slice(indexOfFirst, indexOfLast);
   let pagination = (pageNumber) => props.setCurrentPage(pageNumber);
 
-  if (isAutorized == true) {
-    return (
-      <div className={style.news}>
-        <h3>Last news:</h3>
-        {currentPosts.map((elem) => (
-          <div key={elem.id}>
-            <Components.NewsElement elem={elem} />
-          </div>
-        ))}
-        <h4>Select page:</h4>
-        <Components.SelectPage
-          totalNews={news.length}
-          pageSize={pageSize}
-          pagination={pagination}
-          currentPage={currentPage}
-        />
-      </div>
-    );
-  } else return <Redirect to="/login" />;
+  // if (isAutorized == true) {
+  return (
+    <div className={style.news}>
+      <h3>Last news:</h3>
+      {currentPosts.map((elem) => (
+        <div key={elem.id}>
+          <Components.NewsElement elem={elem} />
+        </div>
+      ))}
+      <h4>Select page:</h4>
+      <Components.SelectPage
+        totalNews={news.length}
+        pageSize={pageSize}
+        pagination={pagination}
+        currentPage={currentPage}
+      />
+    </div>
+  );
+  // } else return <Redirect to="/login" />;
 };
 
 const mapStateToProps = (state) => {

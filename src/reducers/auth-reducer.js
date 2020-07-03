@@ -2,33 +2,17 @@ import { LOG_IN, LOG_OUT } from "../actions/login-action";
 import { REGISTRATION } from "../actions/registration-actions";
 
 let initialState = {
-  user: {
-    login: null,
-    password: null,
-  },
-  isAutorized: true,
+  currentUser: {},
+  isAutorized: false,
 };
 
 const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
-    case REGISTRATION:
+   case LOG_IN:
       return {
         ...state,
-        user: {
-          login: action.payload.user.login,
-          password: action.payload.user.password,
-        },
-        isAutorized: false,
-      };
-
-    case LOG_IN:
-      return {
-        ...state,
-        isAutorized:
-          action.payload.user.login == state.user.login &&
-          action.payload.user.password == state.user.password
-            ? true
-            : false,
+        
+        isAutorized: true,
       };
 
     case LOG_OUT:

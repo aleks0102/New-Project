@@ -9,7 +9,7 @@ const MainTextArea = (props) => {
 
   return (
     <div>
-      <legend>{props.text}</legend>
+      <p>{props.text}</p>
       <textarea
         name={props.name}
         value={props.value}

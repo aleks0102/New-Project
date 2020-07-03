@@ -17,7 +17,7 @@ const MessagesReducer = (state = initialState, action) => {
             id: state.messages.length + 1,
             user: action.payload.message.user,
             message: action.payload.message.text,
-            date: new Date().toLocaleTimeString(),
+            date: new Date().toLocaleString(),
           },
         ]),
       };

@@ -6,7 +6,6 @@ import { savePosts } from "../../../service/setPosts";
 
 const MyPosts = (props) => {
   let posts = props.posts;
-  savePosts(posts);
   return (
     <div className={style.myposts}>
       <Components.AddPost />
