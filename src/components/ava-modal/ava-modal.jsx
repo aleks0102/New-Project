@@ -16,13 +16,13 @@ const AvaModal = (props) => {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
         let avatar = reader.result;
-        props.changeAva(avatar);
+        props.changeAva(avatar, props.userId);
       };
     } else alert("Image not selected or very big");
   };
 
   const deleteAvatar = () => {
-    props.deleteAva();
+    props.deleteAva(props.userId);
   };
 
   return ReactDOM.createPortal(
@@ -31,8 +31,14 @@ const AvaModal = (props) => {
         <Components.Close onClick={props.onClick} />
         <Components.Ava avatar={avatar} />
         <Components.InputFiles onChange={(p) => setFile((file = p))} />
-        <Components.SmallButton onClick={changeAva} text="save" />
-        <Components.SmallButton onClick={deleteAvatar} text="delete" />
+        <Components.SmallButton
+          onClick={() => changeAva(props.userId)}
+          text="save"
+        />
+        <Components.SmallButton
+          onClick={() => deleteAvatar(props.userId)}
+          text="delete"
+        />
       </div>
     </div>,
     modalPost
@@ -41,8 +47,8 @@ const AvaModal = (props) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    changeAva: (avatar) => dispatch(changeAvatar(avatar)),
-    deleteAva: () => dispatch(deleteAvatar()),
+    changeAva: (avatar, id) => dispatch(changeAvatar(avatar, id)),
+    deleteAva: (id) => dispatch(deleteAvatar(id)),
   };
 };
 

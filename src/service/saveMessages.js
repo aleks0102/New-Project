@@ -6,7 +6,7 @@ export const saveMessages = (messages) => {
 export const loadMessages = () => {
   const savedMessages = localStorage.getItem("messages");
   if (savedMessages === null) {
-    return undefined;
+    return [];
   }
   return JSON.parse(savedMessages);
 };

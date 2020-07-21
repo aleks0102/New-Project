@@ -6,7 +6,7 @@ export const savePosts = (posts) => {
 export const loadPosts = () => {
   const savedPosts = localStorage.getItem("posts");
   if (savedPosts === null) {
-    return undefined;
+    return [];
   }
   return JSON.parse(savedPosts);
 };

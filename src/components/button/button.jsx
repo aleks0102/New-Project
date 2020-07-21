@@ -1,7 +1,7 @@
 import React from "react";
-import style from "./main-button.module.css";
+import style from "./button.module.css";
 
-const MainButton = (props) => {
+const Button = (props) => {
   return (
     <button className={style.but} onClick={props.onSubmit}>
       {props.text}
@@ -9,4 +9,4 @@ const MainButton = (props) => {
   );
 };
 
-export default MainButton;
+export default Button;

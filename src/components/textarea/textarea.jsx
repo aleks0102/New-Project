@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import style from "./main-textarea.module.css";
+import React from "react";
+import style from "./textarea.module.css";
 
-const MainTextArea = (props) => {
+const TextArea = (props) => {
   let onChange = (e) => {
     let p = e.target.value;
     props.onChange(p);
@@ -21,4 +21,4 @@ const MainTextArea = (props) => {
   );
 };
 
-export default MainTextArea;
+export default TextArea;

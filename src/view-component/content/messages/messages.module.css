@@ -7,10 +7,6 @@
     grid-template-columns: 6fr 6fr;
 }
 
- h3{
-    font-size: 32px;
-}
-
 .addMessage {
     grid-area: "a";
 }

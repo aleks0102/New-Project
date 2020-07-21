@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import style from "./header.module.css";
 import { NavLink, withRouter } from "react-router-dom";
-import { logOut } from "../../actions/login-action";
 import { connect } from "react-redux";
 import Components from "../../components/components";
+import { logOut } from "../../actions/users-actions";
 
 const Header = (props) => {
   let isAutorized = props.isAutorized;
@@ -15,15 +15,15 @@ const Header = (props) => {
   };
   return (
     <ul className={style.pages}>
-      {/* {isAutorized ? ( */}
+      {isAutorized ? (
         <div>
-          {/* {showModal ? (
+          {showModal ? (
             <Components.LogOutModal
               onClick={() => changeShow((showModal = false))}
               onSubmit={logOut}
               body={"Do you want to log out?"}
             />
-          ) : null} */}
+          ) : null}
           <NavLink to="/">
             <li>Home</li>
           </NavLink>
@@ -43,14 +43,18 @@ const Header = (props) => {
             <li onClick={() => changeShow((showModal = true))}>Logout</li>
           </NavLink>
         </div>
-      {/* ) : null} */}
+      ) : (
+        <NavLink to="/login">
+          <li className={style.login}>{isAutorized == true ? "LogOut" : "Login"}</li>
+        </NavLink>
+      )}
     </ul>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    isAutorized: state.authData.isAutorized,
+    isAutorized: state.users.isAutorized,
   };
 };
 

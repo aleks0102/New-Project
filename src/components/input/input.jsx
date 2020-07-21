@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import style from "./main-input.module.css";
+import React from "react";
+import style from "./input.module.css";
 
-const MainInput = (props) => {
+const Input = (props) => {
   let onChange = (e) => {
     let p = e.target.value;
     props.onChange(p);
@@ -11,7 +11,9 @@ const MainInput = (props) => {
     <div>
       <label>{props.text}</label>
       {props.required == true && (props.value == "" || props.value == null) ? (
-        <span className={style.valid}>Required</span>
+        <span className={style.valid}>
+          {props.validate ? props.validate : "Required"}
+        </span>
       ) : null}
       <input
         name={props.name}
@@ -24,4 +26,4 @@ const MainInput = (props) => {
   );
 };
 
-export default MainInput;
+export default Input;

@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import style from "./news.module.css";
 import { connect } from "react-redux";
-import { SetDataAC, setCurrentPageAC } from "../../../actions/news-actions";
+import { setDataAC, setCurrentPageAC } from "../../../actions/news-actions";
 import Components from "../../../components/components";
-import { Redirect } from "react-router-dom";
 
 const News = (props) => {
-  let isAutorized = props.isAutorized;
-
   useEffect(() => {
     if (props.news.length == 0) {
       let setNews = (news) => {
-        props.SetData(news);
+        props.setData(news);
       };
       Components.getNews(setNews);
     }
@@ -25,7 +22,6 @@ const News = (props) => {
   let currentPosts = news.slice(indexOfFirst, indexOfLast);
   let pagination = (pageNumber) => props.setCurrentPage(pageNumber);
 
-  // if (isAutorized == true) {
   return (
     <div className={style.news}>
       <h3>Last news:</h3>
@@ -43,21 +39,19 @@ const News = (props) => {
       />
     </div>
   );
-  // } else return <Redirect to="/login" />;
 };
 
 const mapStateToProps = (state) => {
   return {
-    news: state.newsPage.news,
-    currentPage: state.newsPage.currentPage,
-    pageSize: state.newsPage.pageSize,
-    isAutorized: state.authData.isAutorized,
+    news: state.news.news,
+    currentPage: state.news.currentPage,
+    pageSize: state.news.pageSize,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    SetData: (news) => dispatch(SetDataAC(news)),
+    setData: (news) => dispatch(setDataAC(news)),
     setCurrentPage: (currentPage) => dispatch(setCurrentPageAC(currentPage)),
   };
 };

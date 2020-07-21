@@ -1,10 +1,18 @@
-import { REGISTRATION } from "../actions/registration-actions";
-import { loadUsers } from "../service/setUsers";
+import {
+  REGISTRATION,
+  SET_CURRENT_USER,
+  LOG_IN,
+  LOG_OUT,
+} from "../actions/users-actions";
+import { loadUsers, loadStatus } from "../service/saveUserData";
 
 const loadedUsers = loadUsers();
+const loadedStatus = loadStatus();
 
 let initialState = {
   users: loadedUsers ? loadedUsers : [],
+  currentUser: null,
+  isAutorized: loadedStatus ? loadedStatus : false,
 };
 
 const UsersReducer = (state = initialState, action) => {
@@ -19,6 +27,24 @@ const UsersReducer = (state = initialState, action) => {
             password: action.payload.user.password,
           },
         ]),
+      };
+
+    case SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: action.payload.user,
+      };
+
+    case LOG_IN:
+      return {
+        ...state,
+        isAutorized: true,
+      };
+
+    case LOG_OUT:
+      return {
+        ...state,
+        isAutorized: false,
       };
     default:
       return state;

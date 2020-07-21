@@ -1,9 +1,10 @@
 .sbutt {
-  background-color: cadetblue;
+  background-color: rgb(55, 69, 148);
   width: 100px;
   border-radius: 10px;
   height: 30px;
-  font-weight: bold;
   display: block;
   margin: 10px auto;
+  color: white;
+
 }

@@ -2,29 +2,33 @@ import React, { useState } from "react";
 import style from "./login.module.css";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { logIn } from "../../../actions/login-action";
 import Components from "../../../components/components";
-import { loadUsers } from "../../../service/setUsers";
+import { loadUsers } from "../../../service/saveUserData";
+import { setCurrentUser, logIn } from "../../../actions/users-actions";
 
 const Login = (props) => {
-  let isAutorized = props.isAutorized;
   let [user, getUserData] = useState({});
   let [showRegistration, changeShow] = useState(false);
+  let [showWarning, toggleWarning] = useState(false);
 
-  let users = loadUsers() || [] ;
+  let isAutorized = props.isAutorized;
+  let users = loadUsers() || [];
+
   const logIn = () => {
-    
     let currentUser =
       users.find((x) => x.login == user.login && x.password == user.password) ||
       null;
     if (currentUser != null) {
-      props.logIn();
-    } 
+      props.logIn(currentUser.userId);
+      props.setCurrentUser(currentUser);
+    } else {
+      toggleWarning((showWarning = true));
+    }
   };
 
-  // if (isAutorized == true) {
-  //   return <Redirect to="/profile" />;
-  // } else {
+  if (isAutorized) {
+    return <Redirect to="/profile" />;
+  } else {
     return (
       <div className={style.loggedin}>
         {showRegistration ? (
@@ -33,22 +37,31 @@ const Login = (props) => {
           />
         ) : null}
         <h2>Login</h2>
-        <Components.MainInput
+        <Components.Input
           type="text"
           text={"Your Name"}
-          onChange={(p) => getUserData({ ...user, login: p })}
+          onChange={(p) => {
+            getUserData({ ...user, login: p });
+            toggleWarning((showWarning = false));
+          }}
           value={user.login}
           required
         />
-        <Components.MainInput
+        <Components.Input
           required={user.password == ""}
           type="password"
           text={"Your pass"}
-          onChange={(p) => getUserData({ ...user, password: p })}
+          onChange={(p) => {
+            getUserData({ ...user, password: p });
+            toggleWarning((showWarning = false));
+          }}
           value={user.password}
           required
         />
-        <Components.MainButton text="Log in" onSubmit={logIn} />{" "}
+        {showWarning == true ? (
+          <Components.Warning text="Login or password is incorrect" />
+        ) : null}
+        <Components.Button text="Log in" onSubmit={logIn} />{" "}
         <p
           className={style.toReg}
           onClick={() => changeShow((showRegistration = true))}
@@ -58,17 +71,18 @@ const Login = (props) => {
       </div>
     );
   }
-// };
+};
 
 const mapStateToProps = (state) => {
   return {
-    isAutorized: state.authData.isAutorized,
+    isAutorized: state.users.isAutorized,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logIn: (validUser) => dispatch(logIn(validUser)),
+    logIn: (userId) => dispatch(logIn(userId)),
+    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
   };
 };
 

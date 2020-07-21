@@ -1,8 +1,9 @@
 .but {
   width: 300px;
   height: 40px;
-  background-color: cadetblue;
+  background-color: rgb(55, 69, 148);
   border-radius: 24px;
-  font-weight: bold;
   margin-top: 20px;
+  color: white;
+
 }

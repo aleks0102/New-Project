@@ -1,9 +1,9 @@
-import { ADD_POST, CHANGE_TEXT } from "../actions/post-actions";
-import { loadPosts } from "../service/setPosts";
+import { ADD_POST, CHANGE_TEXT, SORT } from "../actions/post-actions";
+import { loadPosts } from "../service/savePosts";
 const loadedPosts = loadPosts();
 
 let initialState = {
-  posts: loadedPosts != null ? loadedPosts : [],
+  posts: loadedPosts ? loadedPosts : [],
 };
 
 const PostsReducer = (state = initialState, action) => {
@@ -35,12 +35,18 @@ const PostsReducer = (state = initialState, action) => {
               body: action.payload.newPost.body
                 ? action.payload.newPost.body
                 : p.body,
-              isShowed: false,
             };
           }
           return p;
         }),
       };
+
+    case SORT:
+      return {
+        ...state,
+        posts: action.payload.posts,
+      };
+
     default:
       return state;
   }

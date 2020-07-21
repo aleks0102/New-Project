@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-
 import style from "./registration.module.css";
 import { connect } from "react-redux";
 import Components from "../../../components/components";
-import { registration } from "../../../actions/registration-actions";
+import { registration } from "../../../actions/users-actions";
+import { saveUser } from "../../../actions/profile-action";
 
 const Registration = (props) => {
   let modal = document.querySelector(".app-wraper");
-  let [newUser, setNewUser] = useState(0);
+  let [newUser, setNewUser] = useState({});
 
   let registration = () => {
     if (
@@ -17,6 +17,7 @@ const Registration = (props) => {
       newUser.password != null
     ) {
       props.registration(newUser);
+      props.saveUser();
       props.onClick();
     } else return null;
   };
@@ -26,13 +27,13 @@ const Registration = (props) => {
       <div className={style.form} onClick={(e) => e.stopPropagation()}>
         <Components.Close onClick={props.onClick} />
         <h2>Registration</h2>
-        <Components.MainInput
+        <Components.Input
           text={"Enter your login"}
           onChange={(p) => setNewUser({ ...newUser, login: p })}
           value={newUser.login}
           required
         />
-        <Components.MainInput
+        <Components.Input
           text={"Enter your password"}
           type="password"
           required={newUser.password == ""}
@@ -40,7 +41,7 @@ const Registration = (props) => {
           value={newUser.password}
           required
         />
-        <Components.MainInput
+        <Components.Input
           text={"Submit password"}
           type="password"
           required={newUser.password == ""}
@@ -48,7 +49,7 @@ const Registration = (props) => {
           value={newUser.passСonfirm}
           required
         />
-        <Components.MainButton text={"Save"} onSubmit={registration} />
+        <Components.Button text={"Save"} onSubmit={registration} />
       </div>
     </div>,
     modal
@@ -57,6 +58,7 @@ const Registration = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     registration: (user) => dispatch(registration(user)),
+    saveUser: () => dispatch(saveUser()),
   };
 };
 

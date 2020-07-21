@@ -7,5 +7,10 @@
   width: 16.6%;
   text-align: center;
   color: white;
-  font-weight: bold;
+  font-weight: 500;
+}
+
+.login {
+  position: relative;
+  left: 80%;
 }

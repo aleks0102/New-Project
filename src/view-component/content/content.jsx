@@ -1,6 +1,6 @@
 import React from "react";
 import style from "./content.module.css";
-import { Route, Switch, withRouter } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Components from "../../components/components";
 
 const Content = () => {

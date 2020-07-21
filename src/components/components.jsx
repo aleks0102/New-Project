@@ -2,9 +2,9 @@ import React from "react";
 import { NewsModal } from "./news-modal/news-modal";
 import { getNews } from "../service/getnews";
 import MessageElement from "../view-component/content/messages/messages.element";
-import MainTextArea from "./main-textarea/textarea";
-import MainButton from "./main-button/main-button";
-import MainInput from "./main-input/main-input";
+import TextArea from "./textarea/textarea";
+import Button from "./button/button";
+import Input from "./input/input";
 import SmallButton from "./small-button/small-button";
 import Header from "../view-component/header/header";
 import Content from "../view-component/content/content";
@@ -21,18 +21,19 @@ import NewsElement from "../view-component/content/news/news-element";
 import AddPost from "../view-component/content/myposts/add-post";
 import MyPosts from "../view-component/content/myposts/myposts";
 import PostElement from "../view-component/content/myposts/post-element";
-import AvaModal from "./changeava-modal/ava-modal";
+import AvaModal from "./ava-modal/ava-modal";
 import { Close } from "./close-span/close";
 import { Ava } from "./ava/ava";
-import { InputFiles } from "./input-files/input-file";
+import { InputFiles } from "./input-file/input-file";
+import { Warning } from "./warning/warning";
 
 const Components = {
   NewsModal,
   getNews,
   MessageElement,
-  MainTextArea,
-  MainButton,
-  MainInput,
+  TextArea,
+  Button,
+  Input,
   SmallButton,
   Header,
   Content,
@@ -53,6 +54,7 @@ const Components = {
   Close,
   Ava,
   InputFiles,
+  Warning
 };
 
 export default Components;

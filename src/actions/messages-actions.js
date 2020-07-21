@@ -1,7 +1,7 @@
-import { saveMessages } from "../service/setMessages";
+import { saveMessages } from "../service/saveMessages";
 
 export const ADD_MESSAGE = "ADD-MESSAGE";
 export const addMessage = (message) => (dispatch, getState) => {
   dispatch({ type: ADD_MESSAGE, payload: { message: message } });
-  saveMessages(getState().messagesPage.messages);
+  saveMessages(getState().messages.messages);
 };

@@ -8,7 +8,7 @@ const PostElement = (props) => {
 
   return (
     <div>
-      <h2>{post.title}</h2>
+      <h2 onClick={() => toggleShow((isShowed = true))}>{post.title}</h2>
       <div>
         <div>
           <p onClick={() => toggleShow((isShowed = true))}>{post.body}</p>

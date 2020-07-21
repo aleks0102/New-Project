@@ -2,7 +2,6 @@ import React from "react";
 import style from "./home.module.css";
 import { connect } from "react-redux";
 import Components from "../../../components/components";
-import { Redirect } from "react-router-dom";
 
 const Home = (props) => {
   return (
@@ -30,8 +29,8 @@ const Home = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    posts: state.postsData.posts,
-    messages: state.messagesPage.messages,
+    posts: state.posts.posts,
+    messages: state.messages.messages,
   };
 };
 

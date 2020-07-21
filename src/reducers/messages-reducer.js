@@ -1,10 +1,10 @@
 import { ADD_MESSAGE } from "../actions/messages-actions";
-import { loadMessages } from "../service/setMessages";
+import { loadMessages } from "../service/saveMessages";
 
 const loadedMessages = loadMessages();
 
 let initialState = {
-  messages: loadedMessages != null ? loadedMessages : [],
+  messages: loadedMessages ? loadedMessages : [],
 };
 
 const MessagesReducer = (state = initialState, action) => {

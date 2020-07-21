@@ -1,7 +1,7 @@
 export const SET_DATA = "SET-DATA";
 export const SET_CURRENT_PAGE = "SET-CURRENT-PAGE";
 
-export const SetDataAC = (news) => {
+export const setDataAC = (news) => {
   return { type: SET_DATA, payload: { news: news } };
 };
 
