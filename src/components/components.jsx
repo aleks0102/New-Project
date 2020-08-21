@@ -26,6 +26,7 @@ import { Close } from "./close-span/close";
 import { Ava } from "./ava/ava";
 import { InputFiles } from "./input-file/input-file";
 import { Warning } from "./warning/warning";
+import MessageModal from "./message-modal/message-modal";
 
 const Components = {
   NewsModal,
@@ -54,7 +55,8 @@ const Components = {
   Close,
   Ava,
   InputFiles,
-  Warning
+  Warning,
+  MessageModal,
 };
 
 export default Components;

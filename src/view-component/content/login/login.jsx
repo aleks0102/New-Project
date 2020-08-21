@@ -4,26 +4,30 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import Components from "../../../components/components";
 import { loadUsers } from "../../../service/saveUserData";
-import { setCurrentUser, logIn } from "../../../actions/users-actions";
+import { logIn } from "../../../actions/users-actions";
+import Axios from "axios";
+import { MessageModal } from "../../../components/message-modal/message-modal";
 
 const Login = (props) => {
   let [user, getUserData] = useState({});
   let [showRegistration, changeShow] = useState(false);
-  let [showWarning, toggleWarning] = useState(false);
-
+  let [showMessage, toggleMessage] = useState(false);
+  let [responseMessage, setResponseMessage] = useState(null);
   let isAutorized = props.isAutorized;
-  let users = loadUsers() || [];
 
   const logIn = () => {
-    let currentUser =
-      users.find((x) => x.login == user.login && x.password == user.password) ||
-      null;
-    if (currentUser != null) {
-      props.logIn(currentUser.userId);
-      props.setCurrentUser(currentUser);
-    } else {
-      toggleWarning((showWarning = true));
-    }
+    const hostname = "https://localhost:44373";
+
+    Axios.post(`${hostname}/api/user/authenticate`, user)
+      .then((response) => {
+        props.logIn(response.data.token, response.data.profile.id);
+      })
+      .catch(() => {
+        setResponseMessage(
+          (responseMessage = "Login or password is incorrect")
+        );
+        toggleMessage((showMessage = true));
+      });
   };
 
   if (isAutorized) {
@@ -33,7 +37,15 @@ const Login = (props) => {
       <div className={style.loggedin}>
         {showRegistration ? (
           <Components.Registration
+            showMessage={() => toggleMessage((showMessage = true))}
+            setMessage={(m) => setResponseMessage((responseMessage = m))}
             onClick={() => changeShow((showRegistration = false))}
+          />
+        ) : null}
+        {showMessage ? (
+          <Components.MessageModal
+            onClick={() => toggleMessage((showMessage = false))}
+            text={responseMessage}
           />
         ) : null}
         <h2>Login</h2>
@@ -41,8 +53,7 @@ const Login = (props) => {
           type="text"
           text={"Your Name"}
           onChange={(p) => {
-            getUserData({ ...user, login: p });
-            toggleWarning((showWarning = false));
+            getUserData({ ...user, username: p });
           }}
           value={user.login}
           required
@@ -53,15 +64,11 @@ const Login = (props) => {
           text={"Your pass"}
           onChange={(p) => {
             getUserData({ ...user, password: p });
-            toggleWarning((showWarning = false));
           }}
           value={user.password}
           required
         />
-        {showWarning == true ? (
-          <Components.Warning text="Login or password is incorrect" />
-        ) : null}
-        <Components.Button text="Log in" onSubmit={logIn} />{" "}
+        <Components.Button text="Log in" onSubmit={logIn} />
         <p
           className={style.toReg}
           onClick={() => changeShow((showRegistration = true))}
@@ -81,8 +88,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logIn: (userId) => dispatch(logIn(userId)),
-    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+    logIn: (token, id) => dispatch(logIn(token, id)),
   };
 };
 

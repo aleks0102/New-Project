@@ -1,44 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./mypost.module.css";
 import { connect } from "react-redux";
 import Components from "../../../components/components";
 import SmallButton from "../../../components/small-button/small-button";
-import { sortByDate } from "../../../actions/post-actions";
+import { sortByDate, setMyPosts } from "../../../actions/post-actions";
+import Axios from "axios";
+import { Redirect } from "react-router-dom";
 
 const MyPosts = (props) => {
+  useEffect(() => {
+    getMyPosts();
+  }, []);
+
+  let authorization = {
+    headers: {
+      Authorization: "Bearer " + props.token,
+    },
+  };
+
+  let getMyPosts = () => {
+    Axios.get(
+      "https://localhost:44373/api/post/getmyposts",
+      authorization
+    ).then((response) => {
+      props.setMyPosts((posts = response.data));
+    });
+  };
+
+  let posts = props.myPosts;
+
   const sortByDate = () => {
     let newPosts = posts.map((p) => p);
     newPosts.sort((a, b) =>
-      (newPosts[0].id == 1 ? a.id < b.id : a.id > b.id) ? 1 : -1
+      (newPosts[0].id == props.idOfFirstPost ? a.id < b.id : a.id > b.id)
+        ? 1
+        : -1
     );
-
     props.sortByDate(newPosts);
   };
 
-  let posts = props.posts;
-
-  return (
-    <div className={style.myposts}>
-      <Components.AddPost />
-      <SmallButton onClick={() => sortByDate()} text="Sort" />
-      <h2>Publications</h2>
-      {posts.map((post) => (
-        <div key={post.id}>
-          <Components.PostElement post={post} />
-        </div>
-      ))}
-    </div>
-  );
+  if (props.isAutorized) {
+    return (
+      <div className={style.myposts}>
+        <Components.AddPost authorization={authorization} getMyPosts={getMyPosts} />
+        <SmallButton onClick={sortByDate} text="Sort" />
+        <h2>Publications</h2>
+        {posts.map((post) => (
+          <div key={post.id}>
+            <Components.PostElement post={post} getMyPosts={getMyPosts} authorization={authorization} />
+          </div>
+        ))}
+      </div>
+    );
+  } else return <Redirect to="/login" />;
 };
 
 const mapStateToProps = (state) => {
   return {
-    posts: state.posts.posts,
+    myPosts: state.posts.myPosts,
+    token: state.users.token,
+    isAutorized: state.users.isAutorized,
+    idOfFirstPost: state.posts.idOfFirstPost,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setMyPosts: (posts) => dispatch(setMyPosts(posts)),
     sortByDate: (posts) => dispatch(sortByDate(posts)),
   };
 };

@@ -1,0 +1,30 @@
+.wrap {
+  width: 220px;
+  height: 80px;
+  display: block;
+  position: fixed;
+  top: 10%;
+  right: 10%;
+  background-color:  rgba(42, 41, 122, 0.76);
+  font-size: 18px;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 16px;
+}
+
+.wrap:hover {
+  background-color: rgba(42, 41, 122, 0.76);
+}
+
+.close {
+  position: relative;
+  float: left;
+  cursor: pointer;
+  display: block;
+  font: bold 26px serif;
+}
+
+p{
+  padding-top: 5px;
+}

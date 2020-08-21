@@ -44,9 +44,17 @@ const Header = (props) => {
           </NavLink>
         </div>
       ) : (
-        <NavLink to="/login">
-          <li className={style.login}>{isAutorized == true ? "LogOut" : "Login"}</li>
-        </NavLink>
+        <div>
+          <NavLink to="/">
+            <li>Home</li>
+          </NavLink>
+          <NavLink to="/news">
+            <li>News</li>
+          </NavLink>
+          <NavLink to="/login">
+            <li className={style.login}>Login</li>
+          </NavLink>
+        </div>
       )}
     </ul>
   );

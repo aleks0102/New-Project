@@ -1,44 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import style from "./profile.module.css";
 import Components from "../../../components/components";
 import { connect } from "react-redux";
 import { saveUser, changeProfile } from "../../../actions/profile-action";
 import { Redirect } from "react-router-dom";
-import { loadCurrentUser } from "../../../service/saveUserData";
+import Axios from "axios";
 
 const Profile = (props) => {
-  const currentUser = loadCurrentUser();
-  let profile =
-    props.profiles.find((x) => x.userId == currentUser.userId) || "";
-  let [newUser, setUser] = useState(profile ? profile : {});
+  let [showMessage, toggleMessage] = useState(false);
+  let [responseMessage, setResponseMessage] = useState(null);
+
+  const hostname = "https://localhost:44373/";
+  useEffect(() => {
+    Axios.get(
+      `${hostname}api/profile/getprofile?id=${props.id}`,
+      authorization
+    ).then((response) => {
+      setUser((currentUser = response.data));
+    });
+  }, []);
+
+  let changeProfile = () => {
+    Axios.post(
+      `${hostname}api/profile/save?id=${props.id}`,
+      currentUser,
+      authorization
+    )
+      .then((response) => {
+        setResponseMessage((responseMessage = response.data.message));
+      })
+      .catch(() => {
+        setResponseMessage((responseMessage = "Required fields are empty"));
+      });
+
+    toggleMessage((showMessage = true));
+  };
+
+  let [currentUser, setUser] = useState({});
   let [modalShow, changeShow] = useState(false);
-  const checkMail = (email) => {
-    let symbols = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-    return symbols.test(String(email).toLowerCase());
+  let authorization = {
+    headers: {
+      Authorization: "Bearer " + props.token,
+    },
   };
 
   const saveUser = () => {
-    let validMail = checkMail(newUser.email);
-    if (newUser.name != "" && newUser.lastname != "" && validMail == true) {
-      setUser({ ...newUser, userId: currentUser.userId });
-      props.changeProfile(newUser);
-    } else alert("Required fields are empty");
+    changeProfile();
   };
 
-  let isAutorized = props.isAutorized;
-  if (isAutorized == true) {
+  if (props.isAutorized) {
     return (
       <div className={style.info}>
         {modalShow ? (
           <Components.AvaModal
-            avatar={profile.avatar}
-            userId={newUser.userId}
+            currentUser={currentUser}
             onClick={() => changeShow((modalShow = false))}
+            onChange={(p) => setUser({ ...currentUser, photo: p })}
+            authorization={authorization}
+            saveUser={saveUser}
+          />
+        ) : null}
+        {showMessage ? (
+          <Components.MessageModal
+            text={responseMessage}
+            onClick={() => toggleMessage((showMessage = false))}
           />
         ) : null}
         <div className={style.ava}>
           <h3>My avatar</h3>
-          <Components.Ava avatar={profile.avatar} />
+          <Components.Ava avatar={currentUser.photo} />
           <Components.SmallButton
             text="Change"
             onClick={() => changeShow((modalShow = true))}
@@ -48,30 +78,21 @@ const Profile = (props) => {
         <div className={style.data}>
           <h2>Information</h2>
           <Components.Input
-            onChange={(p) =>
-              setUser({ ...newUser, name: p, userId: currentUser.userId })
-            }
+            onChange={(p) => setUser({ ...currentUser, firstName: p })}
             text="Name"
-            value={newUser.name}
+            value={currentUser.firstName}
             required
           />
           <Components.Input
-            onChange={(p) => setUser({ ...newUser, lastname: p })}
+            onChange={(p) => setUser({ ...currentUser, lastName: p })}
             text={"Last name"}
-            value={newUser.lastname}
+            value={currentUser.lastName}
             required
           />
           <Components.Input
-            onChange={(p) => setUser({ ...newUser, phone: p })}
+            onChange={(p) => setUser({ ...currentUser, phone: p })}
             text={"Phone"}
-            value={newUser.phone}
-          />
-          <Components.Input
-            onChange={(p) => setUser({ ...newUser, email: p })}
-            text={"Email"}
-            required
-            validate={"Email is not in correct format"}
-            value={newUser.email}
+            value={currentUser.phone}
           />
           <Components.Button text={"Save"} onSubmit={saveUser} />
         </div>
@@ -83,13 +104,13 @@ const Profile = (props) => {
 const mapStateToProps = (state) => {
   return {
     isAutorized: state.users.isAutorized,
-    profiles: state.profiles.profiles,
+    id: state.users.currentUserId,
+    token: state.users.token,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveUser: (user) => dispatch(saveUser(user)),
     changeProfile: (user) => dispatch(changeProfile(user)),
   };
 };

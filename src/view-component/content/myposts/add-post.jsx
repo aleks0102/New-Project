@@ -3,21 +3,27 @@ import style from "./mypost.module.css";
 import { connect } from "react-redux";
 import { addPost } from "../../../actions/post-actions";
 import Components from "../../../components/components";
+import Axios from "axios";
 
 const AddPost = (props) => {
-  let [newPost, getnewPost] = useState({});
+  let [newPost, setNewPost] = useState({});
   let [validation, showValidation] = useState(false);
+
   let addPost = () => {
     if (
       newPost.title != "" &&
       newPost.title != undefined &&
       newPost.title != null
     ) {
-      props.addPost(newPost);
+      Axios.post(
+        "https://localhost:44373/api/post/create",
+        newPost,
+        props.authorization
+      ).then(() => props.getMyPosts());
     } else {
       showValidation((validation = true));
     }
-    getnewPost({ ...newPost, title: "", body: "" });
+    setNewPost({ ...newPost, title: "", content: "" });
   };
 
   return (
@@ -26,7 +32,7 @@ const AddPost = (props) => {
 
       <Components.TextArea
         onChange={(p) => {
-          getnewPost({ ...newPost, title: p });
+          setNewPost({ ...newPost, title: p });
           showValidation((validation = false));
         }}
         text={"Post Title"}
@@ -37,10 +43,10 @@ const AddPost = (props) => {
         <Components.Warning text="Post title cannot be empty" />
       ) : null}
       <Components.TextArea
-        onChange={(p) => getnewPost({ ...newPost, body: p })}
+        onChange={(p) => setNewPost({ ...newPost, content: p })}
         text={"Post Body"}
         maxLength="200"
-        value={newPost.body}
+        value={newPost.content}
       />
       <Components.Button onSubmit={addPost} text={"Add"} />
     </div>

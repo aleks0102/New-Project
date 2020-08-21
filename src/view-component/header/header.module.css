@@ -11,6 +11,5 @@
 }
 
 .login {
-  position: relative;
-  left: 80%;
+  float: right;
 }

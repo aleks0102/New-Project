@@ -1,18 +1,13 @@
 import {
   REGISTRATION,
-  SET_CURRENT_USER,
   LOG_IN,
   LOG_OUT,
 } from "../actions/users-actions";
-import { loadUsers, loadStatus } from "../service/saveUserData";
-
-const loadedUsers = loadUsers();
-const loadedStatus = loadStatus();
 
 let initialState = {
-  users: loadedUsers ? loadedUsers : [],
-  currentUser: null,
-  isAutorized: loadedStatus ? loadedStatus : false,
+  isAutorized: false,
+  token: null,
+  currentUserId: null,
 };
 
 const UsersReducer = (state = initialState, action) => {
@@ -29,16 +24,12 @@ const UsersReducer = (state = initialState, action) => {
         ]),
       };
 
-    case SET_CURRENT_USER:
-      return {
-        ...state,
-        currentUser: action.payload.user,
-      };
-
     case LOG_IN:
       return {
         ...state,
         isAutorized: true,
+        token: action.payload.token,
+        currentUserId: action.payload.id,
       };
 
     case LOG_OUT:

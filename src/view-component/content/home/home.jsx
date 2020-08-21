@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./home.module.css";
 import { connect } from "react-redux";
 import Components from "../../../components/components";
+import Axios from "axios";
+import { setAllPosts } from "../../../actions/post-actions";
 
 const Home = (props) => {
+  useEffect(() => {
+    setAllPosts();
+  }, []);
+
+  let setAllPosts = () => {
+    Axios.get("https://localhost:44373/api/post/getall").then((response) =>
+      props.setAllPosts(response.data)
+    );
+  };
+
   return (
     <div className={style.homepage}>
       <div className={style.side}>
@@ -19,7 +31,7 @@ const Home = (props) => {
         <h3>Last posts</h3>
         {props.posts.map((post) => (
           <div key={post.id}>
-            <Components.PostElement post={post} />
+            <Components.PostElement post={post} isPostForAll={true} />
           </div>
         ))}
       </div>
@@ -29,9 +41,15 @@ const Home = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    posts: state.posts.posts,
+    posts: state.posts.allPosts,
     messages: state.messages.messages,
   };
 };
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAllPosts: (posts) => dispatch(setAllPosts(posts)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -1,20 +1,25 @@
-import { savePosts } from "../service/savePosts";
-
+export const SET_MYPOSTS = "SET-MYPOSTS";
+export const SET_ALLPOSTS = "SET-ALLPOSTS";
 export const ADD_POST = "ADD-POST";
 export const CHANGE_TEXT = "CHANGE-BODY";
 export const SORT = "SORT";
 
-export const addPost = (post) => (dispatch, getState) => {
-  dispatch({ type: ADD_POST, payload: { post: post } });
-  savePosts(getState().posts.posts);
+export const setMyPosts = (posts) => {
+  return { type: SET_MYPOSTS, payload: { posts: posts } };
 };
 
-export const changeText = (id, newPost) => (dispatch, getState) => {
-  dispatch({ type: CHANGE_TEXT, id, payload: { newPost: newPost } });
-  savePosts(getState().posts.posts);
+export const setAllPosts = (posts) => {
+  return { type: SET_ALLPOSTS, payload: {posts: posts}}
+}
+
+export const addPost = (post) => {
+  return { type: ADD_POST, payload: { post: post } };
 };
 
-export const sortByDate = (posts) => (dispatch, getState) => {
-  dispatch ({ type: SORT, payload: { posts: posts } });
-  savePosts(getState().posts.posts);
+export const changeText = (id, newPost) => {
+  return { type: CHANGE_TEXT, id, payload: { newPost: newPost } };
+};
+
+export const sortByDate = (posts) => {
+  return { type: SORT, payload: { posts: posts } };
 };

@@ -2,13 +2,22 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import style from "./ava-modal.module.css";
 import { connect } from "react-redux";
-import { changeAvatar, deleteAvatar } from "../../actions/profile-action";
 import Components from "../components";
+import Axios from "axios";
 
 const AvaModal = (props) => {
+  const hostname = "https://localhost:44373/";
+
   let modalPost = document.querySelector(".app-wraper");
-  let avatar = props.avatar;
   let [file, setFile] = useState();
+  let currentUser = props.currentUser;
+  let changeAvaRequest = (currentUser) => {
+    Axios.post(
+      `${hostname}api/profile/save?id=${currentUser.id}`,
+      currentUser,
+      props.authorization
+    ).then((response) => console.log(response));
+  };
 
   const changeAva = () => {
     let reader = new FileReader();
@@ -16,25 +25,25 @@ const AvaModal = (props) => {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
         let avatar = reader.result;
-        props.changeAva(avatar, props.userId);
+        props.onChange(avatar);
+        props.saveUser();
       };
     } else alert("Image not selected or very big");
   };
 
   const deleteAvatar = () => {
-    props.deleteAva(props.userId);
+    props.onChange(null);
+    console.log(props.currentUser);
+    props.saveUser();
   };
 
   return ReactDOM.createPortal(
     <div className={style.modalBg} onClick={props.onClick}>
       <div className={style.modalWin} onClick={(e) => e.stopPropagation()}>
         <Components.Close onClick={props.onClick} />
-        <Components.Ava avatar={avatar} />
+        <Components.Ava avatar={currentUser.photo} />
         <Components.InputFiles onChange={(p) => setFile((file = p))} />
-        <Components.SmallButton
-          onClick={() => changeAva(props.userId)}
-          text="save"
-        />
+        <Components.SmallButton onClick={changeAva} text="save" />
         <Components.SmallButton
           onClick={() => deleteAvatar(props.userId)}
           text="delete"
@@ -46,10 +55,7 @@ const AvaModal = (props) => {
 };
 
 let mapDispatchToProps = (dispatch) => {
-  return {
-    changeAva: (avatar, id) => dispatch(changeAvatar(avatar, id)),
-    deleteAva: (id) => dispatch(deleteAvatar(id)),
-  };
+  return {};
 };
 
 export default connect(null, mapDispatchToProps)(AvaModal);

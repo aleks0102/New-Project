@@ -1,19 +1,39 @@
-import { ADD_POST, CHANGE_TEXT, SORT } from "../actions/post-actions";
-import { loadPosts } from "../service/savePosts";
-const loadedPosts = loadPosts();
+import {
+  ADD_POST,
+  CHANGE_TEXT,
+  SORT,
+  SET_MYPOSTS,
+  SET_ALLPOSTS,
+} from "../actions/post-actions";
 
 let initialState = {
-  posts: loadedPosts ? loadedPosts : [],
+  myPosts: [],
+  allPosts: [],
+  idOfFirstPost: null,
 };
 
 const PostsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_MYPOSTS: {
+      return {
+        ...state,
+        myPosts: action.payload.posts,
+        idOfFirstPost: action.payload.posts[0].id,
+      };
+    }
+
+    case SET_ALLPOSTS:
+      return {
+        ...state,
+        allPosts: action.payload.posts,
+      };
+
     case ADD_POST: {
       return {
         ...state,
-        posts: state.posts.concat([
+        myPosts: state.myPosts.concat([
           {
-            id: state.posts.length + 1,
+            id: state.myPosts.length + 1,
             title: action.payload.post.title,
             body: action.payload.post.body,
             date: new Date().toLocaleString(),
@@ -25,7 +45,7 @@ const PostsReducer = (state = initialState, action) => {
     case CHANGE_TEXT:
       return {
         ...state,
-        posts: state.posts.map((p) => {
+        myPosts: state.myPosts.map((p) => {
           if (p.id === action.id) {
             return {
               ...p,
@@ -44,7 +64,7 @@ const PostsReducer = (state = initialState, action) => {
     case SORT:
       return {
         ...state,
-        posts: action.payload.posts,
+        myPosts: action.payload.posts,
       };
 
     default:

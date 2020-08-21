@@ -4,14 +4,25 @@ import style from "./post-modal.module.css";
 import { connect } from "react-redux";
 import { changeText } from "../../actions/post-actions";
 import Components from "../components";
+import Axios from "axios";
 
 const PostModal = (props) => {
   let modalPost = document.querySelector(".app-wraper");
   let post = props.post;
   let [newPost, getnewPost] = useState(post);
 
-  let changeText = (id) => {
-    props.changeText(id, newPost);
+  let authorization = {
+    headers: {
+      Authorization: "Bearer " + props.token,
+    },
+  };
+
+  let changePost = () => {
+    Axios.post(
+      "https://localhost:44373/api/post/update",
+      newPost,
+      authorization
+    ).then(() => props.getMyPosts());
   };
 
   return ReactDOM.createPortal(
@@ -25,17 +36,23 @@ const PostModal = (props) => {
         />
         <p>{props.body}</p>
         <Components.TextArea
-          onChange={(p) => getnewPost({ ...newPost, body: p })}
-          value={newPost.body}
+          onChange={(p) => getnewPost({ ...newPost, content: p })}
+          value={newPost.content}
         />
         <Components.Button
           text={"Change"}
-          onSubmit={() => changeText(newPost.id)}
+          onSubmit={() => changePost(newPost.id)}
         />
       </div>
     </div>,
     modalPost
   );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.users.token,
+  };
 };
 
 let mapDispatchToProps = (dispatch) => {
@@ -44,4 +61,4 @@ let mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(PostModal);
+export default connect(mapStateToProps, mapDispatchToProps)(PostModal);

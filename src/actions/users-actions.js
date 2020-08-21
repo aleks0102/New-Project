@@ -13,18 +13,10 @@ export const registration = (user) => (dispatch, getState) => {
   saveUsers(getState().users.users);
 };
 
-export const setCurrentUser = (user) => (dispatch, getState) => {
-  dispatch({ type: SET_CURRENT_USER, payload: { user: user } });
-  saveCurrentUser(getState().users.currentUser);
-};
-
-export const logIn = () => (dispatch, getState) => {
-  dispatch({ type: LOG_IN });
-  saveStatus(getState().users.isAutorized);
+export const logIn = (token, id) => {
+  return { type: LOG_IN, payload: { token: token, id: id } };
 };
 
 export const logOut = () => (dispatch, getState) => {
   dispatch({ type: LOG_OUT });
-  saveCurrentUser({});
-  saveStatus(getState().users.isAutorized);
 };
