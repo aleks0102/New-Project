@@ -52,7 +52,7 @@ const MyPosts = (props) => {
           getMyPosts={getMyPosts}
         />
         <SmallButton onClick={sortByDate} text="Sort" />
-        <h2 onClick={() => props.endSession(true)}>Publications</h2>
+        <h2>Publications</h2>
         {posts.map((post) => (
           <div key={post.id}>
             <Components.PostElement
