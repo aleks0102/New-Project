@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { saveUser, changeProfile } from "../../../actions/profile-action";
 import { Redirect } from "react-router-dom";
 import Axios from "axios";
+import { logOut, endSession } from "../../../actions/users-actions";
 
 const Profile = (props) => {
   let [showMessage, toggleMessage] = useState(false);
@@ -12,12 +13,15 @@ const Profile = (props) => {
 
   const hostname = "https://localhost:44373/";
   useEffect(() => {
-    Axios.get(
-      `${hostname}api/profile/getprofile?id=${props.id}`,
-      authorization
-    ).then((response) => {
-      setUser((currentUser = response.data));
-    });
+    Axios.get(`${hostname}api/profile/getprofile?id=${props.id}`, authorization)
+      .then((response) => {
+        setUser((currentUser = response.data));
+      })
+      .catch((err) => {
+        if (err.response.status == 401) {
+          props.endSession(true);
+        } else props.logOut();
+      });
   }, []);
 
   let changeProfile = () => {
@@ -54,6 +58,7 @@ const Profile = (props) => {
         {modalShow ? (
           <Components.AvaModal
             currentUser={currentUser}
+            currentUserId={props.id}
             onClick={() => changeShow((modalShow = false))}
             onChange={(p) => setUser({ ...currentUser, photo: p })}
             authorization={authorization}
@@ -112,6 +117,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     changeProfile: (user) => dispatch(changeProfile(user)),
+    logOut: () => dispatch(logOut()),
+    endSession: (value) => dispatch(endSession(value)),
   };
 };
 

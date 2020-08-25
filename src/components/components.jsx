@@ -27,6 +27,7 @@ import { Ava } from "./ava/ava";
 import { InputFiles } from "./input-file/input-file";
 import { Warning } from "./warning/warning";
 import MessageModal from "./message-modal/message-modal";
+import EndSessionModal from "./end-session-modal/end-session-modal";
 
 const Components = {
   NewsModal,
@@ -57,6 +58,7 @@ const Components = {
   InputFiles,
   Warning,
   MessageModal,
+  EndSessionModal,
 };
 
 export default Components;

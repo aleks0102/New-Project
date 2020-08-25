@@ -2,6 +2,7 @@ import React from "react";
 import style from "./content.module.css";
 import { Route, Switch } from "react-router-dom";
 import Components from "../../components/components";
+import { connect } from "react-redux";
 
 const Content = () => {
   return (

@@ -14,3 +14,7 @@ label {
   color: red;
   display: block;
 }
+
+.validate {
+  border: 2px solid red;
+}

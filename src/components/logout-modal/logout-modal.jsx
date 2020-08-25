@@ -11,7 +11,7 @@ export const LogOutModal = (props) => {
       <div className={style.modalWin} onClick={(e) => e.stopPropagation()}>
         <Components.Close onClick={props.onClick} />
         <div className={style.logOut}>
-          <p>{props.body}</p>
+          
           <Components.SmallButton onClick={props.onSubmit} text={"Yes"} />
           <Components.SmallButton onClick={props.onClick} text={"No"} />
         </div>
@@ -20,3 +20,4 @@ export const LogOutModal = (props) => {
     modalNew
   );
 };
+

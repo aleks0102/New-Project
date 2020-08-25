@@ -3,10 +3,8 @@ import style from "./login.module.css";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import Components from "../../../components/components";
-import { loadUsers } from "../../../service/saveUserData";
 import { logIn } from "../../../actions/users-actions";
 import Axios from "axios";
-import { MessageModal } from "../../../components/message-modal/message-modal";
 
 const Login = (props) => {
   let [user, getUserData] = useState({});
@@ -20,7 +18,8 @@ const Login = (props) => {
 
     Axios.post(`${hostname}/api/user/authenticate`, user)
       .then((response) => {
-        props.logIn(response.data.token, response.data.profile.id);
+        console.log(response.data);
+        props.logIn(response.data);
       })
       .catch(() => {
         setResponseMessage(
@@ -88,7 +87,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logIn: (token, id) => dispatch(logIn(token, id)),
+    logIn: (data) => dispatch(logIn(data)),
   };
 };
 

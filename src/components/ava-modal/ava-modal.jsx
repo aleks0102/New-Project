@@ -13,7 +13,7 @@ const AvaModal = (props) => {
   let currentUser = props.currentUser;
   let changeAvaRequest = (currentUser) => {
     Axios.post(
-      `${hostname}api/profile/save?id=${currentUser.id}`,
+      `${hostname}api/profile/save?id=${props.currentUserId}`,
       currentUser,
       props.authorization
     ).then((response) => console.log(response));
@@ -25,6 +25,7 @@ const AvaModal = (props) => {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
         let avatar = reader.result;
+        changeAvaRequest();
         props.onChange(avatar);
         props.saveUser();
       };
@@ -33,7 +34,6 @@ const AvaModal = (props) => {
 
   const deleteAvatar = () => {
     props.onChange(null);
-    console.log(props.currentUser);
     props.saveUser();
   };
 
