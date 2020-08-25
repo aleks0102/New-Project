@@ -27,8 +27,9 @@ const MyPosts = (props) => {
       .catch((err) => {
         if (err.response.status == 401) {
           props.endSession(true);
+        } else {
+          console.log(err);
         }
-        console.log(err);
       });
   };
 

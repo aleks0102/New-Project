@@ -16,7 +16,7 @@ const PostsReducer = (state = initialState, action) => {
       return {
         ...state,
         myPosts: action.payload.posts,
-        idOfFirstPost: action.payload.posts[0].id,
+        idOfFirstPost: action.payload.posts[0].id || 1,
       };
     }
 
