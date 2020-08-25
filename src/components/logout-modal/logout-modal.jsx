@@ -11,7 +11,7 @@ export const LogOutModal = (props) => {
       <div className={style.modalWin} onClick={(e) => e.stopPropagation()}>
         <Components.Close onClick={props.onClick} />
         <div className={style.logOut}>
-          
+          <p>Do you want to log out?</p>
           <Components.SmallButton onClick={props.onSubmit} text={"Yes"} />
           <Components.SmallButton onClick={props.onClick} text={"No"} />
         </div>

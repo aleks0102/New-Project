@@ -1,5 +1,4 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import ProfileReducer from "./reducers/profile-reducer";
 import MessagesReducer from "./reducers/messages-reducer";
 import NewsReducer from "./reducers/news-reducer";
 import thunk from "redux-thunk";
@@ -8,7 +7,6 @@ import PostsReducer from "./reducers/posts-reducer";
 import UsersReducer from "./reducers/users-reducer";
 
 let reducers = combineReducers({
-  profiles: ProfileReducer,
   messages: MessagesReducer,
   news: NewsReducer,
   posts: PostsReducer,

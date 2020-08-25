@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import style from "./mypost.module.css";
-import { connect } from "react-redux";
-import { addPost } from "../../../actions/post-actions";
 import Components from "../../../components/components";
 import Axios from "axios";
 
@@ -52,12 +50,5 @@ const AddPost = (props) => {
     </div>
   );
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addPost: (post) => {
-      dispatch(addPost(post));
-    },
-  };
-};
 
-export default connect(null, mapDispatchToProps)(AddPost);
+export default AddPost;

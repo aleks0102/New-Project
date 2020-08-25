@@ -18,7 +18,6 @@ const Login = (props) => {
 
     Axios.post(`${hostname}/api/user/authenticate`, user)
       .then((response) => {
-        console.log(response.data);
         props.logIn(response.data);
       })
       .catch(() => {

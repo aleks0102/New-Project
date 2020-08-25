@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import style from "./message-modal.module.css";
-import Components from "../components";
 
 const MessageModal = (props) => {
   let messageM = document.querySelector(".app-wraper");

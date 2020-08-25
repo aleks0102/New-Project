@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import style from "./mypost.module.css";
 import { connect } from "react-redux";
 import Components from "../../../components/components";

@@ -55,10 +55,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-let mapDispatchToProps = (dispatch) => {
-  return {
-    changeText: (id, newPost) => dispatch(changeText(id, newPost)),
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostModal);
+export default connect(mapStateToProps)(PostModal);

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import style from "./registration.module.css";
-import { connect } from "react-redux";
 import Components from "../../../components/components";
-import { registration } from "../../../actions/users-actions";
 import Axios from "axios";
 
 const Registration = (props) => {
@@ -83,10 +81,5 @@ const Registration = (props) => {
     modal
   );
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    registration: (user) => dispatch(registration(user)),
-  };
-};
 
-export default connect(null, mapDispatchToProps)(Registration);
+export default Registration;

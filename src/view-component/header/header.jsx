@@ -33,9 +33,9 @@ const Header = (props) => {
           <NavLink to="/posts">
             <li>Posts</li>
           </NavLink>
-          <NavLink to="/messages">
+          {/* <NavLink to="/messages">
             <li>Messages</li>
-          </NavLink>
+          </NavLink> */}
           <NavLink to="/news">
             <li>News</li>
           </NavLink>

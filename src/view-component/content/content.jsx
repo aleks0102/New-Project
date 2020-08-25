@@ -1,8 +1,6 @@
 import React from "react";
-import style from "./content.module.css";
 import { Route, Switch } from "react-router-dom";
 import Components from "../../components/components";
-import { connect } from "react-redux";
 
 const Content = () => {
   return (
@@ -16,9 +14,9 @@ const Content = () => {
       <Route path="/posts">
         <Components.MyPosts />
       </Route>
-      <Route path="/messages">
+      {/* <Route path="/messages">
         <Components.Messages />
-      </Route>
+      </Route> */}
       <Route path="/news">
         <Components.News />
       </Route>

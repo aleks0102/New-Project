@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import style from "./ava-modal.module.css";
-import { connect } from "react-redux";
 import Components from "../components";
 import Axios from "axios";
 
@@ -54,8 +53,4 @@ const AvaModal = (props) => {
   );
 };
 
-let mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(null, mapDispatchToProps)(AvaModal);
+export default AvaModal;

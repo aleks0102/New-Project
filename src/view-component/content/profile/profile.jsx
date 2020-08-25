@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import style from "./profile.module.css";
 import Components from "../../../components/components";
 import { connect } from "react-redux";
-import { saveUser, changeProfile } from "../../../actions/profile-action";
 import { Redirect } from "react-router-dom";
 import Axios from "axios";
 import { logOut, endSession } from "../../../actions/users-actions";
@@ -116,7 +115,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeProfile: (user) => dispatch(changeProfile(user)),
     logOut: () => dispatch(logOut()),
     endSession: (value) => dispatch(endSession(value)),
   };
