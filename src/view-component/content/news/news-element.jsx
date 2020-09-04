@@ -3,8 +3,8 @@ import style from "./news.module.css";
 import Components from "../../../components/components";
 
 const NewsELement = (props) => {
-  let [isShowed, changeShow] = useState(false);
-  let elem = props.elem;
+  const [isShowed, changeShow] = useState(false);
+  const elem = props.elem;
 
   return (
     <div>
@@ -17,7 +17,7 @@ const NewsELement = (props) => {
             id={elem.id}
             title={elem.title}
             body={elem.body}
-            onClick={() => changeShow((isShowed = false))}
+            onClick={() => changeShow(false)}
           />
         </div>
       ) : null}

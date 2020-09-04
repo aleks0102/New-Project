@@ -1,38 +1,31 @@
 import React, { useEffect } from "react";
 import style from "./home.module.css";
 import { connect } from "react-redux";
-import Components from "../../../components/components";
-import Axios from "axios";
 import { setAllPosts } from "../../../actions/post-actions";
+import { loadAllPosts, catchError } from "../../../service/requests";
+import { setResponseMessage } from "../../../actions/users-actions";
+import PostElement from "../myposts/post-element";
 
 const Home = (props) => {
   useEffect(() => {
-    setAllPosts();
+    loadAllPosts()
+      .then((response) => props.setAllPosts(response.data))
+      .catch((err) => {
+        catchError(err, props.setResponseMessage);
+      });
   }, []);
-
-  let setAllPosts = () => {
-    Axios.get("https://localhost:44373/api/post/getall").then((response) =>
-      props.setAllPosts(response.data)
-    );
-  };
 
   return (
     <div className={style.homepage}>
       <div className={style.side}>
         <h3>Last messages</h3>
-        {props.messages.map((message) => (
-          <div key={message.id}>
-            <Components.MessageElement message={message} />
-          </div>
-        ))}
+        <p>There will be messages soon</p>
       </div>
 
       <div className={style.main}>
         <h3>Last posts</h3>
         {props.posts.map((post) => (
-          <div key={post.id}>
-            <Components.PostElement post={post} isPostForAll={true} />
-          </div>
+          <PostElement post={post} editable={false} />
         ))}
       </div>
     </div>
@@ -42,13 +35,14 @@ const Home = (props) => {
 const mapStateToProps = (state) => {
   return {
     posts: state.posts.allPosts,
-    messages: state.messages.messages,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setAllPosts: (posts) => dispatch(setAllPosts(posts)),
+    setResponseMessage: (value, data) =>
+      dispatch(setResponseMessage(value, data)),
   };
 };
 

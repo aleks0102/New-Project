@@ -1,52 +1,41 @@
 import React, { useState } from "react";
 import style from "./mypost.module.css";
 import Components from "../../../components/components";
-import Axios from "axios";
+import { createPost, catchError } from "../../../service/requests";
 
 const AddPost = (props) => {
-  let [newPost, setNewPost] = useState({});
-  let [validation, showValidation] = useState(false);
+  const [newPost, setNewPost] = useState({ title: null });
 
-  let addPost = () => {
-    if (
-      newPost.title != "" &&
-      newPost.title != undefined &&
-      newPost.title != null
-    ) {
-      Axios.post(
-        "https://localhost:44373/api/post/create",
-        newPost,
-        props.authorization
-      ).then(() => props.getMyPosts());
-    } else {
-      showValidation((validation = true));
-    }
+  const addPost = () => {
+    createPost(newPost, props.token)
+      .then(() => props.setPosts())
+      .catch((err) => {
+        catchError(err, props.setResponseMessage, props.endSession);
+      });
     setNewPost({ ...newPost, title: "", content: "" });
   };
 
   return (
     <div className={style.myposts}>
       <h2>Add post</h2>
-
       <Components.TextArea
         onChange={(p) => {
           setNewPost({ ...newPost, title: p });
-          showValidation((validation = false));
         }}
         text={"Post Title"}
         maxLength="50"
         value={newPost.title}
+        required
       />
-      {validation ? (
-        <Components.Warning text="Post title cannot be empty" />
-      ) : null}
+
       <Components.TextArea
         onChange={(p) => setNewPost({ ...newPost, content: p })}
         text={"Post Body"}
         maxLength="200"
         value={newPost.content}
+        required
       />
-      <Components.Button onSubmit={addPost} text={"Add"} />
+      <Components.Button onClick={addPost} text={"Add"} />
     </div>
   );
 };

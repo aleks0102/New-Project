@@ -1,13 +1,9 @@
-import {
-  SORT,
-  SET_MYPOSTS,
-  SET_ALLPOSTS,
-} from "../actions/post-actions";
+import { SORT, SET_MYPOSTS, SET_ALLPOSTS } from "../actions/post-actions";
 
-let initialState = {
+const initialState = {
   myPosts: [],
   allPosts: [],
-  idOfFirstPost: null,
+  firstPostId: null,
 };
 
 const PostsReducer = (state = initialState, action) => {
@@ -16,7 +12,7 @@ const PostsReducer = (state = initialState, action) => {
       return {
         ...state,
         myPosts: action.payload.posts,
-        idOfFirstPost: action.payload.posts[0].id || 1,
+        firstPostId: action.payload.posts[0].id || 1,
       };
     }
 

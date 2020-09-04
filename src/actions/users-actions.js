@@ -2,8 +2,8 @@ import { saveStatus } from "../service/saveUserData";
 export const LOG_IN = "LOG-IN";
 export const LOG_OUT = "LOG-OUT";
 export const REGISTRATION = "REGISTRATION";
-export const SET_CURRENT_USER = "SET-CURRENT-USER";
 export const END_SESSION = "END-SESSION";
+export const SET_RESPONSE = "SHOW-RESPONSE";
 
 export const registration = (user) => {
   return { type: REGISTRATION, payload: { user: user } };
@@ -19,6 +19,10 @@ export const logOut = () => (dispatch) => {
   saveStatus(false, null, null, null);
 };
 
-export const endSession = (value) => {
-  return { type: END_SESSION, payload: { value: value } };
+export const endSession = (value, reload) => {
+  return { type: END_SESSION, payload: { value: value, reload: reload } };
+};
+
+export const setResponseMessage = (value, text) => {
+  return { type: SET_RESPONSE, payload: { value: value, text: text } };
 };

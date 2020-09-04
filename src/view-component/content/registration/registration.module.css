@@ -1,47 +1,30 @@
-.wrap {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  display: block;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
 .form {
-  border-radius: 12px;
-  height: 80%;
+  height: 100%;
   padding: 10px;
-  background: #fff;
   display: block;
   margin: 10px, auto;
   padding: 40px;
-  position: fixed;
   text-align: center;
-  top: 10%;
-  left: 14%;
-  width: 1000px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
-.formGrid{
+.formGrid {
   display: grid;
-  grid-template-areas: "left left"
+  grid-template-areas:
+    "left left"
     "right right";
   grid-template-rows: 60px 1fr;
   grid-template-columns: 6fr 6fr;
 }
 
-.leftPart{
+.leftPart {
   grid-area: "left";
 }
 
-.rightPart{
+.rightPart {
   grid-area: "right";
 }
 
-.submit{
+.submit {
   display: block;
   margin-top: 280px;
 }

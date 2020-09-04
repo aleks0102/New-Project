@@ -5,51 +5,40 @@ import Components from "../components";
 import Axios from "axios";
 
 const AvaModal = (props) => {
-  const hostname = "https://localhost:44373/";
-
-  let modalPost = document.querySelector(".app-wraper");
-  let [file, setFile] = useState();
-  let currentUser = props.currentUser;
-  let changeAvaRequest = (currentUser) => {
-    Axios.post(
-      `${hostname}api/profile/save?id=${props.currentUserId}`,
-      currentUser,
-      props.authorization
-    ).then((response) => console.log(response));
-  };
+  const modal = document.querySelector(".app-wraper");
+  const [file, setFile] = useState(null);
 
   const changeAva = () => {
-    let reader = new FileReader();
+    const reader = new FileReader();
     if (file != null && file.size < 300000) {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        let avatar = reader.result;
-        changeAvaRequest();
+        const avatar = reader.result;
         props.onChange(avatar);
-        props.saveUser();
+        props.changeProfile();
       };
-    } else alert("Image not selected or very big");
+    } else props.setResponseMessage(true, "Image is not selected or very big");
   };
 
   const deleteAvatar = () => {
     props.onChange(null);
-    props.saveUser();
+    props.changeProfile();
   };
 
   return ReactDOM.createPortal(
     <div className={style.modalBg} onClick={props.onClick}>
       <div className={style.modalWin} onClick={(e) => e.stopPropagation()}>
         <Components.Close onClick={props.onClick} />
-        <Components.Ava avatar={currentUser.photo} />
-        <Components.InputFiles onChange={(p) => setFile((file = p))} />
+        <Components.Ava avatar={props.photo} />
+        <Components.InputFiles onChange={(p) => setFile(p)} />
         <Components.SmallButton onClick={changeAva} text="save" />
         <Components.SmallButton
-          onClick={() => deleteAvatar(props.userId)}
+          onClick={() => deleteAvatar()}
           text="delete"
         />
       </div>
     </div>,
-    modalPost
+    modal
   );
 };
 

@@ -1,41 +1,52 @@
-import React, { useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import style from "./news.module.css";
 import { connect } from "react-redux";
-import { setDataAC, setCurrentPageAC } from "../../../actions/news-actions";
-import Components from "../../../components/components";
+import { setNews } from "../../../actions/news-actions";
+import NewsELement from "./news-element";
+import { getNews } from "../../../service/requests";
+import { SelectPage } from "./select-page";
+import { Route, Switch } from "react-router-dom";
+import { setResponseMessage } from "../../../actions/users-actions";
+import { divideArr } from "../../../service/serviceFunctions";
 
 const News = (props) => {
   useEffect(() => {
-    if (props.news.length == 0) {
-      let setNews = (news) => {
-        props.setData(news);
-      };
-      Components.getNews(setNews);
-    }
+    loadNews();
   }, []);
 
-  let news = props.news;
-  let currentPage = props.currentPage;
-  let pageSize = props.pageSize;
-  let indexOfLast = currentPage * pageSize;
-  let indexOfFirst = indexOfLast - pageSize;
-  let currentPosts = news.slice(indexOfFirst, indexOfLast);
-  let pagination = (pageNumber) => props.setCurrentPage(pageNumber);
+  const loadNews = () => {
+    getNews()
+      .then((response) => props.setNews(response.data))
+      .catch((err) => {
+        if (!err.response) {
+          props.setResponseMessage(true, "Network error");
+        } else props.setResponseMessage(true, err);
+      });
+  };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const countOfPages = 10;
+  const dividedNews = divideArr(props.news, countOfPages);
 
   return (
     <div className={style.news}>
       <h3>Last news:</h3>
-      {currentPosts.map((elem) => (
-        <div key={elem.id}>
-          <Components.NewsElement elem={elem} />
-        </div>
-      ))}
+      <Switch>
+        {dividedNews.map(() => (
+          <Route path={`/news/${currentPage}`}>
+            <div>
+              {dividedNews[currentPage - 1].map((elem) => (
+                <NewsELement elem={elem} />
+              ))}
+            </div>
+          </Route>
+        ))}
+      </Switch>
       <h4>Select page:</h4>
-      <Components.SelectPage
-        totalNews={news.length}
-        pageSize={pageSize}
-        pagination={pagination}
-        currentPage={currentPage}
+      <SelectPage
+        countOfPages={countOfPages}
+        loadNews={loadNews}
+        setCurrentPage={setCurrentPage}
       />
     </div>
   );
@@ -44,15 +55,14 @@ const News = (props) => {
 const mapStateToProps = (state) => {
   return {
     news: state.news.news,
-    currentPage: state.news.currentPage,
-    pageSize: state.news.pageSize,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setData: (news) => dispatch(setDataAC(news)),
-    setCurrentPage: (currentPage) => dispatch(setCurrentPageAC(currentPage)),
+    setNews: (news) => dispatch(setNews(news)),
+    setResponseMessage: (value, text) =>
+      dispatch(setResponseMessage(value, text)),
   };
 };
 

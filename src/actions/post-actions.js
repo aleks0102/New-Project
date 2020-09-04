@@ -10,6 +10,6 @@ export const setAllPosts = (posts) => {
   return { type: SET_ALLPOSTS, payload: {posts: posts}}
 }
 
-export const sortByDate = (posts) => {
+export const sort = (posts) => {
   return { type: SORT, payload: { posts: posts } };
 };

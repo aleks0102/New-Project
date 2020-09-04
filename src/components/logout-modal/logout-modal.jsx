@@ -4,20 +4,28 @@ import style from "./logout-modal.module.css";
 import Components from "../components";
 
 export const LogOutModal = (props) => {
-  let modalNew = document.querySelector(".app-wraper");
+  const modalNew = document.querySelector(".app-wraper");
 
   return ReactDOM.createPortal(
-    <div className={style.modalBg} onClick={props.onClick}>
+    <div className={style.modalBg} onClick={() => props.changeShow(false)}>
       <div className={style.modalWin} onClick={(e) => e.stopPropagation()}>
-        <Components.Close onClick={props.onClick} />
+        <Components.Close onClick={() => props.changeShow(false)} />
         <div className={style.logOut}>
           <p>Do you want to log out?</p>
-          <Components.SmallButton onClick={props.onSubmit} text={"Yes"} />
-          <Components.SmallButton onClick={props.onClick} text={"No"} />
+          <Components.SmallButton
+            onClick={() => {
+              props.changeShow(false);
+              props.logOut();
+            }}
+            text={"Yes"}
+          />
+          <Components.SmallButton
+            onClick={() => props.changeShow(false)}
+            text={"No"}
+          />
         </div>
       </div>
     </div>,
     modalNew
   );
 };
-

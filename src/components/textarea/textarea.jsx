@@ -1,10 +1,11 @@
 import React from "react";
 import style from "./textarea.module.css";
+import { validateField } from "../../service/serviceFunctions";
 
 const TextArea = (props) => {
-  let onChange = (e) => {
-    let p = e.target.value;
-    props.onChange(p);
+  const onChange = (e) => {
+    validateField(e, props.required, style);
+    props.onChange(e.target.value);
   };
 
   return (
@@ -16,6 +17,7 @@ const TextArea = (props) => {
         type={props.type}
         onChange={onChange}
         maxLength={props.maxLength}
+        onClick={validateField}
       ></textarea>
     </div>
   );

@@ -4,20 +4,18 @@ import style from "./end-session-modal.module.css";
 import Components from "../components";
 import { connect } from "react-redux";
 import { endSession, logOut, logIn } from "../../actions/users-actions";
-import Axios from "axios";
+import { login } from "../../service/requests";
 
 const EndSessionModal = (props) => {
-  let modalNew = document.querySelector(".app-wraper");
-  let [user, getUserData] = useState({
+  const modalNew = document.querySelector(".app-wraper");
+  const [user, getUserData] = useState({
     username: props.username,
-    password: null,
   });
 
-  let confirmPass = () => {
-    const hostname = "https://localhost:44373";
-
-    Axios.post(`${hostname}/api/user/authenticate`, user)
+  const confirmPass = () => {
+    login(user)
       .then((response) => {
+        if (props.needToReload) window.location.reload(true);
         props.endSession(false);
         props.logIn(response.data);
       })
@@ -26,7 +24,7 @@ const EndSessionModal = (props) => {
       });
   };
 
-  let closeWindow = () => {
+  const closeWindow = () => {
     props.endSession(false);
     props.logOut();
   };
@@ -47,7 +45,7 @@ const EndSessionModal = (props) => {
             value={user.password}
             required
           />
-          <Components.Button text="Log in" onSubmit={confirmPass} />
+          <Components.Button text="Log in" onClick={confirmPass} />
         </div>
       </div>
     </div>,
@@ -58,6 +56,7 @@ const EndSessionModal = (props) => {
 const mapStateToProps = (state) => {
   return {
     username: state.users.username,
+    needToReload: state.users.needToReload,
   };
 };
 

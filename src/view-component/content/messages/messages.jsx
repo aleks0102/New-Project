@@ -8,7 +8,7 @@ import { addMessage } from "../../../actions/messages-actions";
 const Messages = (props) => {
   let messages = props.messages;
   let [newMessage, getnewMessage] = useState({});
-  let isAutorized = props.isAutorized;
+  let isAuthorized = props.isAuthorized;
 
   const addMessage = () => {
     if (newMessage.user != null && newMessage.user != "") {
@@ -17,7 +17,7 @@ const Messages = (props) => {
     }
   };
 
-  if (isAutorized) {
+  if (isAuthorized) {
     return (
       <div className={style.messages}>
         <div className={style.addMessage}>
@@ -51,7 +51,7 @@ const Messages = (props) => {
 const mapStateToProps = (state) => {
   return {
     messages: state.messages.messages,
-    isAutorized: state.users.isAutorized,
+    isAuthorized: state.users.isAuthorized,
   };
 };
 

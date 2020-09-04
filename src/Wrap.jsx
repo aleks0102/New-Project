@@ -1,17 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import "./index.css";
 import { connect } from "react-redux";
 import Components from "./components/components";
 import { BrowserRouter } from "react-router-dom";
+import { logOut, setResponseMessage } from "./actions/users-actions";
 
 const Wrap = (props) => {
+  const [showModal, changeShow] = useState(false);
+
   return (
     <div>
-      {props.showConfirmMessage ? <Components.EndSessionModal /> : null}
+      <div>
+        {props.toggleResponse && (
+          <Components.ResponseMessage
+            onClick={() => props.setResponseMessage(false)}
+            text={props.responseText}
+          />
+        )}
+        {showModal && (
+          <Components.LogOutModal
+            changeShow={changeShow}
+            logOut={props.logOut}
+          />
+        )}
+        {props.endSessionMessage && <Components.EndSessionModal />}
+      </div>
+
       <BrowserRouter>
         <div className="app-wraper">
           <div className="header">
-            <Components.Header />
+            <Components.Header
+              changeShow={changeShow}
+              isAuthorized={props.isAuthorized}
+              logOut={props.logOut}
+            />
           </div>
           <div className="content">
             <Components.Content />
@@ -24,8 +46,18 @@ const Wrap = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    showConfirmMessage: state.users.showEndSessionMessage,
+    endSessionMessage: state.users.endSessionMessage,
+    toggleResponse: state.users.toggleResponse,
+    responseText: state.users.responseText,
+    isAuthorized: state.users.isAuthorized,
   };
 };
 
-export default connect(mapStateToProps)(Wrap);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logOut: () => dispatch(logOut()),
+    setResponseMessage: (value) => dispatch(setResponseMessage(value)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Wrap);

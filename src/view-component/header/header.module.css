@@ -2,7 +2,7 @@
   margin: 10px 0;
 }
 
-.pages li {
+.pages a {
   display: inline-block;
   width: 20%;
   text-align: center;

@@ -1,9 +1,7 @@
 import { SET_DATA, SET_CURRENT_PAGE } from "../actions/news-actions";
 
-let initialState = {
+const initialState = {
   news: [],
-  pageSize: 10,
-  currentPage: 1,
 };
 
 const NewsReducer = (state = initialState, action) => {
@@ -13,12 +11,7 @@ const NewsReducer = (state = initialState, action) => {
         ...state,
         news: action.payload.news,
       };
-
-    case SET_CURRENT_PAGE:
-      return {
-        ...state,
-        currentPage: action.payload.currentPage,
-      };
+      
     default:
       return state;
   }

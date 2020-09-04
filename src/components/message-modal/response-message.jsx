@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import style from "./message-modal.module.css";
 
-const MessageModal = (props) => {
-  let messageM = document.querySelector(".app-wraper");
+const ResponseMessage = (props) => {
+  const message = document.querySelector(".app-wraper");
 
   useEffect(() => {
     setTimeout(props.onClick, 3000);
@@ -14,8 +14,8 @@ const MessageModal = (props) => {
       <span className={style.close}>×</span>
       <p>{props.text}</p>
     </div>,
-    messageM
+    message
   );
 };
 
-export default MessageModal;
+export default ResponseMessage;

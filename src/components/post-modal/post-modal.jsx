@@ -1,28 +1,19 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import style from "./post-modal.module.css";
-import { connect } from "react-redux";
-import { changeText } from "../../actions/post-actions";
 import Components from "../components";
-import Axios from "axios";
+import { updatePost, catchError } from "../../service/requests";
 
 const PostModal = (props) => {
-  let modalPost = document.querySelector(".app-wraper");
-  let post = props.post;
-  let [newPost, getnewPost] = useState(post);
+  const modalPost = document.querySelector(".app-wraper");
+  const [newPost, getnewPost] = useState(props.post);
 
-  let authorization = {
-    headers: {
-      Authorization: "Bearer " + props.token,
-    },
-  };
-
-  let changePost = () => {
-    Axios.post(
-      "https://localhost:44373/api/post/update",
-      newPost,
-      authorization
-    ).then(() => props.getMyPosts());
+  const changePost = () => {
+    updatePost(newPost, props.token)
+      .then(() => props.setPosts())
+      .catch((err) => {
+        catchError(err, props.setResponseMessage, props.endSession);
+      });
   };
 
   return ReactDOM.createPortal(
@@ -41,7 +32,7 @@ const PostModal = (props) => {
         />
         <Components.Button
           text={"Change"}
-          onSubmit={() => changePost(newPost.id)}
+          onClick={() => changePost(newPost.id)}
         />
       </div>
     </div>,
@@ -49,11 +40,4 @@ const PostModal = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.users.token,
-  };
-};
-
-
-export default connect(mapStateToProps)(PostModal);
+export default PostModal;

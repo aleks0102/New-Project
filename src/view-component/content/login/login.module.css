@@ -1,4 +1,4 @@
-.loggedin {
+.login {
   display: block;
   margin: 20px auto;
   text-align: center;
@@ -10,5 +10,7 @@
   text-decoration-style: solid;
   font-size: 33px;
   text-decoration: underline;
+  display: block;
+  color: black;
 }
 

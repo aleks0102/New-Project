@@ -2,89 +2,80 @@ import React, { useEffect } from "react";
 import style from "./mypost.module.css";
 import { connect } from "react-redux";
 import Components from "../../../components/components";
-import SmallButton from "../../../components/small-button/small-button";
-import { sortByDate, setMyPosts } from "../../../actions/post-actions";
-import Axios from "axios";
+import { sort, setMyPosts } from "../../../actions/post-actions";
 import { Redirect } from "react-router-dom";
-import { logOut, endSession } from "../../../actions/users-actions";
+import {
+  logOut,
+  endSession,
+  setResponseMessage,
+} from "../../../actions/users-actions";
+import { loadPosts, catchError } from "../../../service/requests";
+import PostElement from "./post-element";
+import { sortPosts } from "../../../service/serviceFunctions";
 
 const MyPosts = (props) => {
   useEffect(() => {
-    getMyPosts();
+    setPosts();
   }, []);
 
-  let authorization = {
-    headers: {
-      Authorization: "Bearer " + props.token,
-    },
-  };
-
-  let getMyPosts = () => {
-    Axios.get("https://localhost:44373/api/post/getmyposts", authorization)
+  const setPosts = () => {
+    loadPosts(props.token)
       .then((response) => {
-        props.setMyPosts((posts = response.data));
+        props.setMyPosts(response.data);
       })
       .catch((err) => {
-        if (err.response.status == 401) {
-          props.endSession(true);
-        } else {
-          console.log(err);
-        }
+        catchError(err, props.setResponseMessage, props.endSession);
       });
   };
 
-  let posts = props.myPosts;
+  if (!props.isAuthorized) return <Redirect to="/login" />;
 
-  const sortByDate = () => {
-    let newPosts = posts.map((p) => p);
-    newPosts.sort((a, b) =>
-      (newPosts[0].id == props.idOfFirstPost ? a.id < b.id : a.id > b.id)
-        ? 1
-        : -1
-    );
-    props.sortByDate(newPosts);
-  };
-
-  if (props.isAutorized) {
-    return (
-      <div className={style.myposts}>
-        <Components.AddPost
-          authorization={authorization}
-          getMyPosts={getMyPosts}
+  return (
+    <div className={style.myposts}>
+      <Components.AddPost
+        token={props.token}
+        setPosts={setPosts}
+        setResponseMessage={props.setResponseMessage}
+        endSession={props.endSession}
+      />
+      <Components.SmallButton
+        onClick={() => sortPosts(props.myPosts, props.sort, props.firstPostId)}
+        text="Sort"
+      />
+      <h2>Publications</h2>
+      {props.myPosts.map((post) => (
+        <PostElement
+          post={post}
+          key={post.id}
+          token={props.token}
+          setPosts={setPosts}
+          editable={true}
+          endSession={props.endSession}
+          setResponseMessage={props.setResponseMessage}
         />
-        <SmallButton onClick={sortByDate} text="Sort" />
-        <h2>Publications</h2>
-        {posts.map((post) => (
-          <div key={post.id}>
-            <Components.PostElement
-              post={post}
-              getMyPosts={getMyPosts}
-              authorization={authorization}
-            />
-          </div>
-        ))}
-      </div>
-    );
-  } else return <Redirect to="/login" />;
+      ))}
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => {
   return {
     myPosts: state.posts.myPosts,
     token: state.users.token,
-    isAutorized: state.users.isAutorized,
-    idOfFirstPost: state.posts.idOfFirstPost,
+    isAuthorized: state.users.isAuthorized,
+    firstPostId: state.posts.firstPostId,
     showConfirmMessage: state.users.showEndSessionMessage,
-    username: state.users.username,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setMyPosts: (posts) => dispatch(setMyPosts(posts)),
-    sortByDate: (posts) => dispatch(sortByDate(posts)),
+    sort: (posts) => dispatch(sort(posts)),
     logOut: () => dispatch(logOut()),
-    endSession: (value) => dispatch(endSession(value)),
+    endSession: (value, reload) => dispatch(endSession(value, reload)),
+    setResponseMessage: (value, text) =>
+      dispatch(setResponseMessage(value, text)),
   };
 };
 

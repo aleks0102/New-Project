@@ -4,7 +4,7 @@ import style from "./news-modal.module.css";
 import Components from "../components";
 
 export const NewsModal = (props) => {
-  let modalNew = document.querySelector(".app-wraper");
+  const modalNew = document.querySelector(".app-wraper");
   return ReactDOM.createPortal(
     <div className={style.modalBg} onClick={props.onClick}>
       <div className={style.modalWin} onClick={(e) => e.stopPropagation()}>

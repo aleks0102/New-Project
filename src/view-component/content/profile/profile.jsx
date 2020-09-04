@@ -3,112 +3,91 @@ import style from "./profile.module.css";
 import Components from "../../../components/components";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import Axios from "axios";
-import { logOut, endSession } from "../../../actions/users-actions";
+import {
+  logOut,
+  endSession,
+  setResponseMessage,
+} from "../../../actions/users-actions";
+import { getProfile, saveProfile, catchError } from "../../../service/requests";
 
 const Profile = (props) => {
-  let [showMessage, toggleMessage] = useState(false);
-  let [responseMessage, setResponseMessage] = useState(null);
-
-  const hostname = "https://localhost:44373/";
   useEffect(() => {
-    Axios.get(`${hostname}api/profile/getprofile?id=${props.id}`, authorization)
+    getProfile(props.id, props.token)
       .then((response) => {
-        setUser((currentUser = response.data));
+        setProfile(response.data);
+      })
+      .catch((err) => {
+        catchError(err, props.setResponseMessage, props.endSession);
+      });
+  }, []);
+
+  const [profile, setProfile] = useState({ firstName: null });
+  const [modalShow, changeShow] = useState(false);
+
+  if (!props.isAuthorized) return <Redirect to="/login" />;
+
+  const changeProfile = () => {
+    saveProfile(props.id, profile, props.token)
+      .then((response) => {
+        props.setResponseMessage(true, response.data.message);
       })
       .catch((err) => {
         if (err.response.status == 401) {
           props.endSession(true);
-        } else props.logOut();
+        }
+        props.setResponseMessage(true, err.response.data.title);
       });
-  }, []);
-
-  let changeProfile = () => {
-    Axios.post(
-      `${hostname}api/profile/save?id=${props.id}`,
-      currentUser,
-      authorization
-    )
-      .then((response) => {
-        setResponseMessage((responseMessage = response.data.message));
-      })
-      .catch(() => {
-        setResponseMessage((responseMessage = "Required fields are empty"));
-      });
-
-    toggleMessage((showMessage = true));
   };
 
-  let [currentUser, setUser] = useState({});
-  let [modalShow, changeShow] = useState(false);
-  let authorization = {
-    headers: {
-      Authorization: "Bearer " + props.token,
-    },
-  };
-
-  const saveUser = () => {
-    changeProfile();
-  };
-
-  if (props.isAutorized) {
-    return (
-      <div className={style.info}>
-        {modalShow ? (
-          <Components.AvaModal
-            currentUser={currentUser}
-            currentUserId={props.id}
-            onClick={() => changeShow((modalShow = false))}
-            onChange={(p) => setUser({ ...currentUser, photo: p })}
-            authorization={authorization}
-            saveUser={saveUser}
-          />
-        ) : null}
-        {showMessage ? (
-          <Components.MessageModal
-            text={responseMessage}
-            onClick={() => toggleMessage((showMessage = false))}
-          />
-        ) : null}
-        <div className={style.ava}>
-          <h3>My avatar</h3>
-          <Components.Ava avatar={currentUser.photo} />
-          <Components.SmallButton
-            text="Change"
-            onClick={() => changeShow((modalShow = true))}
-          />
-        </div>
-
-        <div className={style.data}>
-          <h2>Information</h2>
-          <Components.Input
-            onChange={(p) => setUser({ ...currentUser, firstName: p })}
-            text="Name"
-            value={currentUser.firstName}
-            required
-          />
-          <Components.Input
-            onChange={(p) => setUser({ ...currentUser, lastName: p })}
-            text={"Last name"}
-            value={currentUser.lastName}
-            required
-          />
-          <Components.Input
-            onChange={(p) => setUser({ ...currentUser, phone: p })}
-            text={"Phone"}
-            value={currentUser.phone}
-          />
-          <Components.Button text={"Save"} onSubmit={saveUser} />
-        </div>
+  return (
+    <div className={style.info}>
+      {modalShow && (
+        <Components.AvaModal
+          onClick={() => changeShow(false)}
+          onChange={(p) => setProfile({ profile, photo: p })}
+          changeProfile={changeProfile}
+          setResponseMessage={props.setResponseMessage}
+          photo={profile.photo}
+        />
+      )}
+      <div className={style.ava}>
+        <h3>My avatar</h3>
+        <Components.Ava avatar={profile.photo} />
+        <Components.SmallButton
+          text="Change"
+          onClick={() => changeShow(true)}
+        />
       </div>
-    );
-  } else return <Redirect to="/login" />;
+
+      <div className={style.data}>
+        <h2>Information</h2>
+        <Components.Input
+          onChange={(p) => setProfile({ ...profile, firstName: p })}
+          text="Name"
+          value={profile.firstName}
+          required
+        />
+        <Components.Input
+          onChange={(p) => setProfile({ ...profile, lastName: p })}
+          text={"Last name"}
+          value={profile.lastName}
+          required
+        />
+        <Components.Input
+          onChange={(p) => setProfile({ ...profile, phone: p })}
+          text={"Phone"}
+          value={profile.phone}
+        />
+        <Components.Button text={"Save"} onClick={changeProfile} />
+      </div>
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => {
   return {
-    isAutorized: state.users.isAutorized,
-    id: state.users.currentUserId,
+    isAuthorized: state.users.isAuthorized,
+    id: state.users.currentId,
     token: state.users.token,
   };
 };
@@ -116,7 +95,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     logOut: () => dispatch(logOut()),
-    endSession: (value) => dispatch(endSession(value)),
+    endSession: (value, reload) => dispatch(endSession(value, reload)),
+    setResponseMessage: (value, text) =>
+      dispatch(setResponseMessage(value, text)),
   };
 };
 

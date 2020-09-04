@@ -1,52 +1,59 @@
 import React, { useState } from "react";
 import style from "./mypost.module.css";
 import Components from "../../../components/components";
-import Axios from "axios";
+import { deletePost, publishPost, catchError } from "../../../service/requests";
 
 const PostElement = (props) => {
-  let [isShowed, toggleShow] = useState(false);
+  const [modal, toggleModal] = useState(false);
   const post = props.post;
 
-  let deletePost = () => {
-    Axios.post(
-      "https://localhost:44373/api/post/delete",
-      post,
-      props.authorization
-    ).then(() => props.getMyPosts());
+  const onDelete = () => {
+    deletePost(props.post, props.token)
+      .then((response) => {
+        props.setPosts();
+        props.setResponseMessage(true, response.data.message);
+      })
+      .catch((err) => {
+        catchError(err, props.setResponseMessage, props.endSession);
+      });
   };
 
-  let publishPost = () => {
-    Axios.post(
-      "https://localhost:44373/api/post/publish",
-      post,
-      props.authorization
-    ).then(() => props.getMyPosts());
+  const onPublish = () => {
+    publishPost(props.post, props.token)
+      .then((response) => {
+        props.setPosts();
+        props.setResponseMessage(true, response.data.message);
+      })
+      .catch((err) => {
+        catchError(err, props.setResponseMessage, props.endSession);
+      });
   };
 
   return (
     <div>
-      <h2 onClick={() => toggleShow((isShowed = true))}>{post.title}</h2>
+      <h2 onClick={() => toggleModal(true)}>{post.title}</h2>
       <div>
         <div>
-          <p onClick={() => toggleShow((isShowed = true))}>{post.content}</p>
-          {isShowed ? (
+          <p onClick={() => toggleModal(true)}>{post.content}</p>
+          {props.editable && modal && (
             <div>
               <Components.PostModal
-                getMyPosts={props.getMyPosts}
+                setPosts={props.setPosts}
                 post={post}
-                onClick={() => toggleShow((isShowed = false))}
+                onClick={() => toggleModal(false)}
+                token={props.token}
+                setResponseMessage={props.setResponseMessage}
+                endSession={props.endSession}
               />
             </div>
-          ) : null}
+          )}
         </div>
         <span>{post.publishedDate}</span>
-        {props.isPostForAll ? null : (
-          <div className={style.splitedButtons}>
-            {post.isPublished ? null : (
-              <Components.SmallButton text="Publish" onClick={publishPost} />
-            )}
-            <Components.SmallButton text="Delete" onClick={deletePost} />
-          </div>
+        {props.editable && (
+          <Components.SmallButton text="Delete" onClick={onDelete} />
+        )}
+        {props.editable && !post.isPublished && (
+          <Components.SmallButton text="Publish" onClick={onPublish} />
         )}
       </div>
     </div>

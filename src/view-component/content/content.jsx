@@ -23,6 +23,9 @@ const Content = () => {
       <Route path="/login">
         <Components.Login />
       </Route>
+      <Route path="/registration">
+        <Components.Registration />
+      </Route>
     </Switch>
   );
 };

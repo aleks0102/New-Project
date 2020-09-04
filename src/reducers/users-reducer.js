@@ -2,6 +2,8 @@ import {
   LOG_IN,
   LOG_OUT,
   END_SESSION,
+  SET_RESPONSE,
+  SAVE_PROFILE,
 } from "../actions/users-actions";
 import {
   loadStatus,
@@ -10,12 +12,15 @@ import {
   loadUserName,
 } from "../service/saveUserData";
 
-let initialState = {
-  isAutorized: loadStatus() ? loadStatus() : false,
-  token: loadToken() ? loadToken() : null,
-  currentUserId: loadCurrentId() ? loadCurrentId() : null,
-  username: loadUserName() ? loadUserName() : null,
-  showEndSessionMessage: false,
+const initialState = {
+  isAuthorized: loadStatus() || false,
+  token: loadToken() || null,
+  currentId: loadCurrentId() || null,
+  username: loadUserName() || null,
+  endSessionMessage: false,
+  needToReload: false,
+  toggleResponse: false,
+  responseText: null,
 };
 
 const UsersReducer = (state = initialState, action) => {
@@ -23,24 +28,32 @@ const UsersReducer = (state = initialState, action) => {
     case LOG_IN:
       return {
         ...state,
-        isAutorized: true,
+        isAuthorized: true,
         token: action.payload.data.token,
-        currentUserId: action.payload.data.profile.id,
+        currentId: action.payload.data.profile.id,
         username: action.payload.data.username,
       };
 
     case LOG_OUT:
       return {
         ...state,
-        isAutorized: false,
+        isAuthorized: false,
         token: null,
-        currentUserId: null,
+        currentId: null,
       };
 
     case END_SESSION:
       return {
         ...state,
-        showEndSessionMessage: action.payload.value,
+        endSessionMessage: action.payload.value,
+        needToReload: action.payload.reload,
+      };
+
+    case SET_RESPONSE:
+      return {
+        ...state,
+        toggleResponse: action.payload.value,
+        responseText: action.payload.text,
       };
 
     default:

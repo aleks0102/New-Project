@@ -1,13 +1,13 @@
-export const saveStatus = (isAutorized, token, id, username) => {
-  sessionStorage.setItem("isAutorized", JSON.stringify(isAutorized));
+export const saveStatus = (isAuthorized, token, id, username) => {
+  sessionStorage.setItem("isAuthorized", JSON.stringify(isAuthorized));
   sessionStorage.setItem("token", JSON.stringify(token));
-  sessionStorage.setItem("currentUserId", JSON.stringify(id));
+  sessionStorage.setItem("currentId", JSON.stringify(id));
   sessionStorage.setItem("username", JSON.stringify(username));
 
 };
 
 export const loadStatus = () => {
-  return JSON.parse(sessionStorage.getItem("isAutorized"));
+  return JSON.parse(sessionStorage.getItem("isAuthorized"));
 };
 
 export const loadToken = () => {
@@ -15,7 +15,7 @@ export const loadToken = () => {
 };
 
 export const loadCurrentId = () => {
-  return JSON.parse(sessionStorage.getItem("currentUserId"));
+  return JSON.parse(sessionStorage.getItem("currentId"));
 };
 
 export const loadUserName = () => {

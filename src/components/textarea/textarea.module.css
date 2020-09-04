@@ -5,3 +5,7 @@ textarea {
   font-size: 24px;
   margin-top: 20px;
 }
+
+.validate {
+  border: 2px solid red;
+}
