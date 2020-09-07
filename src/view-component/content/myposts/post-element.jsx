@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import style from "./mypost.module.css";
 import Components from "../../../components/components";
 import { deletePost, publishPost, catchError } from "../../../service/requests";
+import moment from 'moment';
 
 const PostElement = (props) => {
   const [modal, toggleModal] = useState(false);
@@ -48,7 +49,7 @@ const PostElement = (props) => {
             </div>
           )}
         </div>
-        <span>{post.publishedDate}</span>
+        <span>{moment(post.publishedDate).toString()}</span>
         {props.editable && (
           <Components.SmallButton text="Delete" onClick={onDelete} />
         )}
