@@ -42,7 +42,7 @@ const Login = (props) => {
       />
       <Components.Button text="Log in" onClick={onLogin} />
       <NavLink className={style.toReg} to="/registration">
-        Or click: To registration
+        To registration
       </NavLink>
     </div>
   );

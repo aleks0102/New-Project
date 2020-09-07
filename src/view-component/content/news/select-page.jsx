@@ -13,7 +13,6 @@ export const SelectPage = (props) => {
       {pages.map((page) => (
         <NavLink
           className={style.page}
-          onClick={() => props.loadNews(page)}
           key={page}
           to={`/news/${page}`}
           onClick={() => props.setCurrentPage(page)}

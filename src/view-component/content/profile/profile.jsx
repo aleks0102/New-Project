@@ -32,10 +32,7 @@ const Profile = (props) => {
         props.setResponseMessage(true, response.data.message);
       })
       .catch((err) => {
-        if (err.response.status == 401) {
-          props.endSession(true);
-        }
-        props.setResponseMessage(true, err.response.data.title);
+        catchError(err, props.setResponseMessage, props.endSession);
       });
   };
 
@@ -44,7 +41,7 @@ const Profile = (props) => {
       {modalShow && (
         <Components.AvaModal
           onClick={() => changeShow(false)}
-          onChange={(p) => setProfile({ profile, photo: p })}
+          onChange={(p) => setProfile({ ...profile, photo: p })}
           changeProfile={changeProfile}
           setResponseMessage={props.setResponseMessage}
           photo={profile.photo}

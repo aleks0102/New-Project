@@ -3,7 +3,7 @@ import style from "./news.module.css";
 import { connect } from "react-redux";
 import { setNews } from "../../../actions/news-actions";
 import NewsELement from "./news-element";
-import { getNews } from "../../../service/requests";
+import { getNews, catchError } from "../../../service/requests";
 import { SelectPage } from "./select-page";
 import { Route, Switch } from "react-router-dom";
 import { setResponseMessage } from "../../../actions/users-actions";
@@ -18,9 +18,7 @@ const News = (props) => {
     getNews()
       .then((response) => props.setNews(response.data))
       .catch((err) => {
-        if (!err.response) {
-          props.setResponseMessage(true, "Network error");
-        } else props.setResponseMessage(true, err);
+        catchError(err, props.setResponseMessage, props.endSession);
       });
   };
 

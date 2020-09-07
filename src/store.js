@@ -7,7 +7,7 @@ import PostsReducer from "./reducers/posts-reducer";
 import UsersReducer from "./reducers/users-reducer";
 
 let reducers = combineReducers({
-  messages: MessagesReducer,
+  //messages: MessagesReducer,
   news: NewsReducer,
   posts: PostsReducer,
   users: UsersReducer,

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import style from "./ava-modal.module.css";
 import Components from "../components";
-import Axios from "axios";
 
 const AvaModal = (props) => {
   const modal = document.querySelector(".app-wraper");
@@ -21,8 +20,8 @@ const AvaModal = (props) => {
   };
 
   const deleteAvatar = () => {
-    props.onChange(null);
     props.changeProfile();
+    props.onChange(null);
   };
 
   return ReactDOM.createPortal(
@@ -32,10 +31,7 @@ const AvaModal = (props) => {
         <Components.Ava avatar={props.photo} />
         <Components.InputFiles onChange={(p) => setFile(p)} />
         <Components.SmallButton onClick={changeAva} text="save" />
-        <Components.SmallButton
-          onClick={() => deleteAvatar()}
-          text="delete"
-        />
+        <Components.SmallButton onClick={() => deleteAvatar()} text="delete" />
       </div>
     </div>,
     modal
