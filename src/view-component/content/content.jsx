@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useState } from "react";
+import { Route, Switch, useParams } from "react-router-dom";
 import Components from "../../components/components";
 
 const Content = () => {
@@ -17,7 +17,7 @@ const Content = () => {
       {/* <Route path="/messages">
         <Components.Messages />
       </Route> */}
-      <Route path="/news">
+      <Route path="/news/:pageNo">
         <Components.News />
       </Route>
       <Route path="/login">
