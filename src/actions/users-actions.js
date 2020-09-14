@@ -10,7 +10,7 @@ export const registration = (user) => {
 };
 
 export const logIn = (data) => (dispatch) => {
-  dispatch({ type: LOG_IN, payload: { data: data } });
+  dispatch({ type: LOG_IN});
   saveStatus(true, data.token, data.profile.id, data.username);
 };
 

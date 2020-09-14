@@ -3,17 +3,20 @@
   grid-template-areas: "s m";
   grid-template-columns: 4fr 8fr;
   text-align: center;
+  background-color: rgb(250, 250, 250);
 }
 
 .main {
   grid-area: m;
   margin: 0 10px;
+  background-color: rgb(250, 250, 250);
+
 }
 
 .side {
   grid-area: s;
-  border-right: 10px solid white;
   background-color: rgb(55, 69, 148);
   padding: 10px;
   color: rgba(255, 255, 255, 0.945);
+  height: 600px;
 }

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import "./index.css";
 import { connect } from "react-redux";
 import Components from "./components/components";
-import { BrowserRouter } from "react-router-dom";
 import { logOut, setResponseMessage } from "./actions/users-actions";
+import { BrowserRouter } from "react-router-dom";
 
 const Wrap = (props) => {
-  const [showModal, changeShow] = useState(false);
+  const [showModal, changeShow] = React.useState(false);
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import style from "./login.module.css";
 import { Redirect, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
@@ -6,9 +6,8 @@ import Components from "../../../components/components";
 import { logIn, setResponseMessage } from "../../../actions/users-actions";
 import { login, catchError } from "../../../service/requests";
 
-
 const Login = (props) => {
-  const [user, getUserData] = useState({ username: null, password: null });
+  const [user, getUserData] = React.useState({ username: null, password: null });
   if (props.isAuthorized) return <Redirect to="/profile" />;
 
   const onLogin = () => {
@@ -23,25 +22,27 @@ const Login = (props) => {
 
   return (
     <div className={style.login}>
-      <h2>Login</h2>
-      <Components.Input
-        text={"Your Name"}
-        onChange={(p) => {
-          getUserData({ ...user, username: p });
-        }}
-        value={user.login}
-        required
-      />
-      <Components.Input
-        type="password"
-        text={"Your pass"}
-        onChange={(p) => {
-          getUserData({ ...user, password: p });
-        }}
-        value={user.password}
-        required
-      />
-      <Components.Button text="Log in" onClick={onLogin} />
+      <div className={style.formBox}>
+        <h2>Login</h2>
+        <Components.Input
+          text={"Username"}
+          onChange={(p) => {
+            getUserData({ ...user, username: p });
+          }}
+          value={user.login}
+          required
+        />
+        <Components.Input
+          type="password"
+          text={"Password"}
+          onChange={(p) => {
+            getUserData({ ...user, password: p });
+          }}
+          value={user.password}
+          required
+        />
+        <Components.Button text="Log in" onClick={onLogin} />
+      </div>
       <NavLink className={style.toReg} to="/registration">
         To registration
       </NavLink>

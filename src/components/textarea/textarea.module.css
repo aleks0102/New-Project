@@ -1,9 +1,9 @@
 textarea {
-  width: 300px;
-  height: 80px;
+  width: 420px;
+  height: 260px;
   border-radius: 24px;
   font-size: 24px;
-  margin-top: 20px;
+  resize: none;
 }
 
 .validate {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import style from "./registration.module.css";
 import Components from "../../../components/components";
 import { connect } from "react-redux";
@@ -6,7 +6,14 @@ import { setResponseMessage } from "../../../actions/users-actions";
 import { registrate, catchError } from "../../../service/requests";
 
 const Registration = (props) => {
-  const [newUser, setNewUser] = useState({ username: null });
+  const [newUser, setNewUser] = React.useState({
+    username: null,
+    lastName: null,
+    email: null,
+    phone: null,
+    password: null,
+    confirm: null,
+  });
 
   const saveUser = () => {
     registrate(newUser)
@@ -17,7 +24,6 @@ const Registration = (props) => {
         catchError(err, props.setResponseMessage);
       });
   };
-
   return (
     <div className={style.form} onClick={props.onClick}>
       <h2>Registration</h2>

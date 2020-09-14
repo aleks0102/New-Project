@@ -1,37 +1,44 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import style from "./ava-modal.module.css";
 import Components from "../components";
+import { saveProfile, catchError } from "../../service/requests";
 
 const AvaModal = (props) => {
   const modal = document.querySelector(".app-wraper");
-  const [file, setFile] = useState(null);
+  const [profile, setProfile] = React.useState(props.profile);
 
-  const changeAva = () => {
-    const reader = new FileReader();
-    if (file != null && file.size < 300000) {
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        const avatar = reader.result;
-        props.onChange(avatar);
-        props.changeProfile();
-      };
-    } else props.setResponseMessage(true, "Image is not selected or very big");
+  console.log(profile)
+
+  const saveAvatar = () => {
+    saveProfile(profile)
+      .then((response) => {
+        props.setResponseMessage(true, response.data.message);
+        props.setCurrentProfile();
+      })
+      .catch((err) => {
+        catchError(err, props.setResponseMessage, props.endSession);
+      });
+    props.setCurrentProfile();
   };
 
   const deleteAvatar = () => {
-    props.changeProfile();
-    props.onChange(null);
+    setProfile({ ...profile, photo: null });
   };
 
   return ReactDOM.createPortal(
     <div className={style.modalBg} onClick={props.onClick}>
       <div className={style.modalWin} onClick={(e) => e.stopPropagation()}>
         <Components.Close onClick={props.onClick} />
-        <Components.Ava avatar={props.photo} />
-        <Components.InputFiles onChange={(p) => setFile(p)} />
-        <Components.SmallButton onClick={changeAva} text="save" />
-        <Components.SmallButton onClick={() => deleteAvatar()} text="delete" />
+        <Components.Ava avatar={profile.photo} />
+        <Components.InputFiles
+          onChange={(e) => {
+            setProfile({ ...profile, photo: e });
+          }}
+          setResponseMessage={props.setResponseMessage}
+        />
+        <Components.SmallButton onClick={saveAvatar} text="save" />
+        <Components.SmallButton onClick={deleteAvatar} text="delete" />
       </div>
     </div>,
     modal

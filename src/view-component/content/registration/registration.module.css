@@ -12,8 +12,10 @@
   grid-template-areas:
     "left left"
     "right right";
-  grid-template-rows: 60px 1fr;
   grid-template-columns: 6fr 6fr;
+  border-radius: 32px;
+  border: 1px solid grey;
+  padding: 20px 0;
 }
 
 .leftPart {
@@ -26,5 +28,4 @@
 
 .submit {
   display: block;
-  margin-top: 280px;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import style from "./mypost.module.css";
 import { connect } from "react-redux";
 import Components from "../../../components/components";
@@ -14,17 +14,17 @@ import PostElement from "./post-element";
 import { sortPosts } from "../../../service/serviceFunctions";
 
 const MyPosts = (props) => {
-  useEffect(() => {
+  React.useEffect(() => {
     setPosts();
   }, []);
 
   const setPosts = () => {
-    loadPosts(props.token)
+    loadPosts()
       .then((response) => {
         props.setMyPosts(response.data);
       })
       .catch((err) => {
-        catchError(err, props.setResponseMessage, props.endSession);
+        catchError(err, true);
       });
   };
 
@@ -32,28 +32,27 @@ const MyPosts = (props) => {
 
   return (
     <div className={style.myposts}>
-      <Components.AddPost
-        token={props.token}
-        setPosts={setPosts}
-        setResponseMessage={props.setResponseMessage}
-        endSession={props.endSession}
-      />
-      <Components.SmallButton
-        onClick={() => sortPosts(props.myPosts, props.sort, props.firstPostId)}
-        text="Sort"
-      />
-      <h2>Publications</h2>
-      {props.myPosts.map((post) => (
-        <PostElement
-          post={post}
-          key={post.id}
-          token={props.token}
-          setPosts={setPosts}
-          editable={true}
-          endSession={props.endSession}
-          setResponseMessage={props.setResponseMessage}
+      <div className={style.sortPosts}>
+        <Components.SmallButton
+          onClick={() =>
+            sortPosts(props.myPosts, props.sort, props.firstPostId)
+          }
+          text="Sort"
         />
-      ))}
+      </div>
+      <h2>Publications</h2>
+      <div className={style.postList}>
+        {props.myPosts.map((post) => (
+          <PostElement
+            post={post}
+            key={post.id}
+            setPosts={setPosts}
+            editable={true}
+            endSession={props.endSession}
+            setResponseMessage={props.setResponseMessage}
+          />
+        ))}
+      </div>
     </div>
   );
 };
@@ -61,7 +60,6 @@ const MyPosts = (props) => {
 const mapStateToProps = (state) => {
   return {
     myPosts: state.posts.myPosts,
-    token: state.users.token,
     isAuthorized: state.users.isAuthorized,
     firstPostId: state.posts.firstPostId,
     showConfirmMessage: state.users.showEndSessionMessage,

@@ -4,15 +4,35 @@ p {
 .myposts {
   padding: 20px;
   display: block;
-  text-align: center;
 }
+
 
 .splitedButtons {
   display: block;
 }
 
-button {
-  margin: 5px;
-  width: 80px;
-  display: inline;
+.postsGrid{
+  display: grid;
+  grid-template-areas: "i c";
+  grid-template-columns: 8fr 4fr;
+  box-shadow: 10px 5px 5px grey;
+  margin: 20px auto;
+  padding: 10px;
+  border-radius: 12px;
+  text-align: left;
+}
+  
+
+.postItem{
+  grid-area: i;
+}
+
+.postControls{
+  padding-top: 30px;
+  grid-area: c;
+
+}
+
+.sortPosts{
+  float: right;
 }

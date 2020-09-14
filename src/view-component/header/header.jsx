@@ -1,26 +1,25 @@
 import React from "react";
 import style from "./header.module.css";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Header = (props) => {
+  const location = useLocation();
   return (
-    <ul className={style.pages}>
-      <div>
-        <NavLink to="/">Home</NavLink>
-        {props.isAuthorized && <NavLink to="/profile">Profile</NavLink>}
-        {props.isAuthorized && <NavLink to="/posts">Posts</NavLink>}
-        <NavLink to="/news/1">News</NavLink>
-        <NavLink
-          to={!props.isAuthorized && "/login"}
-          onClick={() => props.isAuthorized && props.changeShow(true)}
-        >
-          {props.isAuthorized ? "Log out" : "Log in"}
-        </NavLink>
-        {!props.isAuthorized && (
-          <NavLink to="/registration">Registration</NavLink>
-        )}
-      </div>
-    </ul>
+    <div className={style.pages}>
+      <Link to="/">Home</Link>
+      {props.isAuthorized && <Link to="/profile">Profile</Link>}
+      {props.isAuthorized && <Link to="/posts">Posts</Link>}
+      {props.isAuthorized && <Link to="/add-post">AddPost</Link>}
+      <Link to="/news/1">News</Link>
+      <Link
+        onClick={() => props.isAuthorized && props.changeShow(true)}
+        to={!props.isAuthorized ? "/login" : location.pathname}
+      >
+        {props.isAuthorized ? "Log out" : "Log in"}
+      </Link>
+      {!props.isAuthorized && <Link to="/registration">Registration</Link>}
+    </div>
   );
 };
 

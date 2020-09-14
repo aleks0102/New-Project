@@ -17,7 +17,7 @@ const TextArea = (props) => {
         type={props.type}
         onChange={onChange}
         maxLength={props.maxLength}
-        onClick={validateField}
+        onClick={(e) => validateField(e, props.required, style)}
       ></textarea>
     </div>
   );

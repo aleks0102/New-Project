@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import style from "./end-session-modal.module.css";
 import Components from "../components";
 import { connect } from "react-redux";
 import { endSession, logOut, logIn } from "../../actions/users-actions";
 import { login } from "../../service/requests";
+import { loadUserName } from "../../service/saveUserData";
 
 const EndSessionModal = (props) => {
   const modalNew = document.querySelector(".app-wraper");
-  const [user, getUserData] = useState({
-    username: props.username,
+  const [user, setUserData] =  React.useState({
+    username: loadUserName(),
+    password: null,
   });
 
   const confirmPass = () => {
@@ -35,12 +37,12 @@ const EndSessionModal = (props) => {
         <Components.Close onClick={closeWindow} />
         <div className={style.logOut}>
           <h2>Session is over. Please, confirm password</h2>
-          <h3>{props.username}</h3>
+          <h3>{user.username}</h3>
           <Components.Input
             type="password"
             text={"Your pass"}
             onChange={(p) => {
-              getUserData({ ...user, password: p });
+              setUserData({ ...user, password: p });
             }}
             value={user.password}
             required
@@ -55,7 +57,6 @@ const EndSessionModal = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    username: state.users.username,
     needToReload: state.users.needToReload,
   };
 };

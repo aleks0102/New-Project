@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import style from "./profile.module.css";
 import Components from "../../../components/components";
 import { connect } from "react-redux";
@@ -11,23 +11,32 @@ import {
 import { getProfile, saveProfile, catchError } from "../../../service/requests";
 
 const Profile = (props) => {
-  useEffect(() => {
-    getProfile(props.id, props.token)
-      .then((response) => {
-        setProfile(response.data);
-      })
-      .catch((err) => {
-        catchError(err, props.setResponseMessage, props.endSession);
-      });
+  React.useEffect(() => {
+    setCurrentProfile();
   }, []);
 
-  const [profile, setProfile] = useState({ firstName: null });
-  const [modalShow, changeShow] = useState(false);
+  const setCurrentProfile = () => {
+    getProfile()
+    .then((response) => {
+      setProfile(response.data);
+    })
+    .catch((err) => {
+      catchError(err, props.setResponseMessage, props.endSession, true);
+    });
+  }
+
+  const [profile, setProfile] = React.useState({
+    firstName: null,
+    lastName: null,
+    phone: null,
+    
+  });
+  const [modalShow, changeShow] = React.useState(false);
 
   if (!props.isAuthorized) return <Redirect to="/login" />;
 
   const changeProfile = () => {
-    saveProfile(props.id, profile, props.token)
+    saveProfile(profile)
       .then((response) => {
         props.setResponseMessage(true, response.data.message);
       })
@@ -41,10 +50,10 @@ const Profile = (props) => {
       {modalShow && (
         <Components.AvaModal
           onClick={() => changeShow(false)}
-          onChange={(p) => setProfile({ ...profile, photo: p })}
-          changeProfile={changeProfile}
+          profile={profile}
+          setCurrentProfile={setCurrentProfile}
           setResponseMessage={props.setResponseMessage}
-          photo={profile.photo}
+          endSession={props.endSession}
         />
       )}
       <div className={style.ava}>
@@ -84,8 +93,6 @@ const Profile = (props) => {
 const mapStateToProps = (state) => {
   return {
     isAuthorized: state.users.isAuthorized,
-    id: state.users.currentId,
-    token: state.users.token,
   };
 };
 

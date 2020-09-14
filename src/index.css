@@ -14,9 +14,7 @@ body {
     font-size: 16px;
   }
 
-  h1, h2, h3{
-    padding: 5px;
-    font-size: 22px;
+  h1, h2, h3, h4{
     font-weight: bold;
   }
 code {
@@ -30,7 +28,7 @@ code {
 }
 
 .app-wraper {
-  width: 1200px;
+  width: 1300px;
   margin: 0 auto;
   display: grid;
 

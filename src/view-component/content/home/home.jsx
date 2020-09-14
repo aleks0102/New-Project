@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import style from "./home.module.css";
 import { connect } from "react-redux";
 import { setAllPosts } from "../../../actions/post-actions";
@@ -7,7 +7,7 @@ import { setResponseMessage } from "../../../actions/users-actions";
 import PostElement from "../myposts/post-element";
 
 const Home = (props) => {
-  useEffect(() => {
+  React.useEffect(() => {
     loadAllPosts()
       .then((response) => props.setAllPosts(response.data))
       .catch((err) => {
@@ -18,14 +18,14 @@ const Home = (props) => {
   return (
     <div className={style.homepage}>
       <div className={style.side}>
-        <h3>Last messages</h3>
+        <h2>Last messages</h2>
         <p>There will be messages soon</p>
       </div>
 
       <div className={style.main}>
-        <h3>Last posts</h3>
+        <h2>Last posts</h2>
         {props.posts.map((post) => (
-          <PostElement post={post} editable={false} />
+          <PostElement post={post} editable={false} key={post.id} />
         ))}
       </div>
     </div>

@@ -1,19 +1,21 @@
 import Axios from "axios";
+import { loadToken, loadCurrentId } from "./saveUserData";
 
 const hostname = "https://localhost:44373";
-const authenticate = (token) => {
+const authenticate = () => {
   return {
     headers: {
-      Authorization: "Bearer " + token,
+      Authorization: "Bearer " + loadToken(),
     },
   };
 };
 
-export const catchError = (err, setResponseMessage, endSession) => {
+
+export const catchError = (err, setResponseMessage, endSession, reload) => {
   if (!err.response) {
     setResponseMessage(true, "Network error");
   } else if (err.response.status == 401) {
-    endSession(true, true);
+    endSession(true, reload);
   } else
     setResponseMessage(
       true,
@@ -39,43 +41,43 @@ export const registrate = (user) => {
 
 //Profile
 
-export const getProfile = (id, token) => {
+export const getProfile = () => {
   return Axios.get(
-    `${hostname}/api/profile/getprofile?id=${id}`,
-    authenticate(token)
+    `${hostname}/api/profile/getprofile?id=${loadCurrentId()}`,
+    authenticate()
   );
 };
 
-export const saveProfile = (id, user, token) => {
+export const saveProfile = (user) => {
   return Axios.post(
-    `${hostname}/api/profile/save?id=${id}`,
+    `${hostname}/api/profile/save?id=${loadCurrentId()}`,
     user,
-    authenticate(token)
+    authenticate()
   );
 };
 
 //Post
 
-export const loadPosts = (token) => {
-  return Axios.get(`${hostname}/api/post/getmyposts`, authenticate(token));
+export const loadPosts = () => {
+  return Axios.get(`${hostname}/api/post/getmyposts`, authenticate());
 };
 
-export const createPost = (post, token) => {
-  return Axios.post(`${hostname}/api/post/create`, post, authenticate(token));
+export const createPost = (post) => {
+  return Axios.post(`${hostname}/api/post/create`, post, authenticate());
 };
 
-export const deletePost = (post, token) => {
-  return Axios.post(`${hostname}/api/post/delete`, post, authenticate(token));
+export const deletePost = (post) => {
+  return Axios.post(`${hostname}/api/post/delete`, post, authenticate());
 };
 
-export const publishPost = (post, token) => {
-  return Axios.post(`${hostname}/api/post/publish`, post, authenticate(token));
+export const publishPost = (post) => {
+  return Axios.post(`${hostname}/api/post/publish`, post, authenticate());
 };
 
 export const loadAllPosts = () => {
   return Axios.get(`${hostname}/api/post/getall`);
 };
 
-export const updatePost = (post, token) => {
-  return Axios.post(`${hostname}/api/post/update`, post, authenticate(token));
+export const updatePost = (post) => {
+  return Axios.post(`${hostname}/api/post/update`, post, authenticate());
 };

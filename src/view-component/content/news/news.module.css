@@ -1,21 +1,47 @@
 .news {
   margin: 0 auto;
-  padding: 10px;
-  text-align: center;
+  padding: 50px;
+  text-align: left;
 }
 
 .show {
-  cursor: pointer;
-  margin: 50px;
+  font-size: 22px;
 }
 
 .page {
   margin: 10px;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: solid;
+  color: black;
 }
 
-.page:hover{
+.active {
+  margin: 10px;
+  cursor: pointer;
+  font-size: 32px;
+  font-weight: bold;
+  color: black;
+  text-decoration: underline;
+}
+.pagination {
+  text-align: center;
+}
+
+.newsItem {
+  padding-top: 10px;
+}
+
+.readMore {
+  cursor: pointer;
+  padding-left: 20px;
+  color: blue;
+}
+
+.readMore:hover {
+  text-decoration: underline;
+}
+
+.page:hover {
   text-decoration: underline;
 }

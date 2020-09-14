@@ -6,21 +6,18 @@ export const sortPosts = (posts, sort, id) => {
   sort(newPosts);
 };
 
-export const divideArr = (arr, divider) => {
-  let arrOfArrs = [];
-  let currentArr = [];
-  let item = 0;
+export const divideArr = (arr, contentPerPage) => {
+  let allPages = [];
+  let page = [];
 
-  for (let i = 0; i < divider; i++) {
-    for (let j = 0; j < arr.length / divider; j++) {
-      if (arr[item]) currentArr.push(arr[item]);
-      item++;
+  for (let j = 0; j < arr.length; j++) {
+    arr[j] && page.push(arr[j]);
+    if (page.length == contentPerPage || j == arr.length - 1) {
+      allPages.push(page);
+      page = [];
     }
-    arrOfArrs.push(currentArr);
-    currentArr = [];
   }
-
-  return arrOfArrs;
+  return allPages;
 };
 
 export const validateField = (e, required, style) => {
@@ -28,3 +25,6 @@ export const validateField = (e, required, style) => {
     e.target.classList = style.validate;
   } else e.target.className = null;
 };
+
+export const capitalizeFirstLetter = (text) =>
+  text[0].toUpperCase() + text.slice(1);

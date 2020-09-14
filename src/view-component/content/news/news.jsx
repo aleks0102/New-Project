@@ -1,45 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import style from "./news.module.css";
-import { connect } from "react-redux";
-import { setNews } from "../../../actions/news-actions";
 import NewsELement from "./news-element";
-import { getNews, catchError } from "../../../service/requests";
+import { getNews } from "../../../service/requests";
 import { useParams, NavLink } from "react-router-dom";
-import { setResponseMessage } from "../../../actions/users-actions";
 import { divideArr } from "../../../service/serviceFunctions";
 
-const News = (props) => {
-  useEffect(() => {
-    getNews()
-      .then((response) => props.setNews(response.data))
-      .catch((err) => {
-        catchError(err, props.setResponseMessage, props.endSession);
-      });
+const newsPerPage = 7;
+
+export const News = () => {
+  const [news, setNews] = React.useState([]);
+  const { pageNo } = useParams();
+
+  React.useEffect(() => {
+    if (!news.length)
+      getNews()
+        .then((response) => setNews(response.data))
+        .catch((err) => {
+          //catchError(err, props.setResponseMessage, props.endSession);
+        });
   }, []);
 
-  const { pageNo } = useParams();
-  const countOfPages = 10;
-  const dividedNews = divideArr(props.news, countOfPages);
-  const pages = [];
+  const countOfPages = React.useMemo(() => {
+    return Math.ceil(news.length / newsPerPage);
+  }, [news]);
 
+  const dividedNews = React.useMemo(() => {
+    return divideArr(news, newsPerPage, newsPerPage);
+  }, [news, newsPerPage]);
+
+
+  console.log(dividedNews)
+
+  const pages = [];
   for (let i = 1; i <= countOfPages; i++) {
     pages.push(i);
   }
 
   return (
     <div className={style.news}>
-      <h3>Last news:</h3>
+      <h2>Last news:</h2>
       <div>
-        {dividedNews[pageNo - 1].map((elem) => (
-          <NewsELement elem={elem} key={elem.id} />
-        ))}
+        {!!dividedNews[pageNo - 1] &&
+          dividedNews[pageNo - 1].map((elem) => (
+            <NewsELement elem={elem} key={elem.id} />
+          ))}
       </div>
-
-      <h4>Select page:</h4>
-      <div>
+      <div className={style.pagination}>
         {pages.map((page) => (
           <NavLink
-            className={style.page}
+            className={pageNo == page ? style.active : style.page}
             key={page}
             to={`/news/${page}`}
           >
@@ -50,19 +59,3 @@ const News = (props) => {
     </div>
   );
 };
-
-const mapStateToProps = (state) => {
-  return {
-    news: state.news.news,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setNews: (news) => dispatch(setNews(news)),
-    setResponseMessage: (value, text) =>
-      dispatch(setResponseMessage(value, text)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(News);

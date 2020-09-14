@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import style from "./post-modal.module.css";
 import Components from "../components";
@@ -6,7 +6,7 @@ import { updatePost, catchError } from "../../service/requests";
 
 const PostModal = (props) => {
   const modalPost = document.querySelector(".app-wraper");
-  const [newPost, getnewPost] = useState(props.post);
+  const [newPost, getnewPost] = React.useState(props.post);
 
   const changePost = () => {
     updatePost(newPost, props.token)

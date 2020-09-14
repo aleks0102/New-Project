@@ -17,7 +17,7 @@ const Input = (props) => {
         onChange={onChange}
         maxLength={props.maxLength}
         value={props.value}
-        onClick={validateField}
+        onClick={(e) => validateField(e, props.required, style)}
       />
     </div>
   );

@@ -3,7 +3,6 @@ import {
   LOG_OUT,
   END_SESSION,
   SET_RESPONSE,
-  SAVE_PROFILE,
 } from "../actions/users-actions";
 import {
   loadStatus,
@@ -14,9 +13,6 @@ import {
 
 const initialState = {
   isAuthorized: loadStatus() || false,
-  token: loadToken() || null,
-  currentId: loadCurrentId() || null,
-  username: loadUserName() || null,
   endSessionMessage: false,
   needToReload: false,
   toggleResponse: false,
@@ -29,17 +25,13 @@ const UsersReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthorized: true,
-        token: action.payload.data.token,
-        currentId: action.payload.data.profile.id,
-        username: action.payload.data.username,
       };
 
     case LOG_OUT:
       return {
         ...state,
         isAuthorized: false,
-        token: null,
-        currentId: null,
+
       };
 
     case END_SESSION:
