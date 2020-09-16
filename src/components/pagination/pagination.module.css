@@ -1,0 +1,50 @@
+.page {
+  cursor: pointer;
+  font-size: 26px;
+  font-weight: solid;
+  color: black;
+  text-decoration: none;
+  border: 1px solid grey;
+  text-align: center;
+  height: 40px;
+}
+
+.active {
+  text-align: center;
+  cursor: pointer;
+  font-size: 26px;
+  color: black;
+  text-decoration: underline;
+  border: 1px solid grey;
+  background-color: rgb(55, 69, 148);
+  height: 40px;
+
+}
+
+.pagination {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 40px);
+  justify-content: center;
+  align-items: start;
+
+}
+
+.page:hover {
+  text-decoration: underline;
+}
+
+.paginationWrap{
+  text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .page {
+    font-size: 20px;
+    height: 30px;
+  }
+
+  .active {
+    font-size: 20px;
+    height: 30px;
+  }
+}

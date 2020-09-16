@@ -24,7 +24,7 @@ const MyPosts = (props) => {
         props.setMyPosts(response.data);
       })
       .catch((err) => {
-        catchError(err, true);
+        catchError(err, props.setResponseMessage, props.endSession, true);
       });
   };
 

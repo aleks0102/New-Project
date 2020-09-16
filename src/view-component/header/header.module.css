@@ -1,15 +1,25 @@
 .pages {
-  margin: 10px 0;
+  padding-top:18px ;
+  font-size: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 95px);
+  justify-content: center;
 }
 
 .pages a {
-  display: inline-block;
-  width: 16.3%;
   text-align: center;
   color: white;
   font-weight: 500;
+  text-decoration: none;
 }
 
 .active {
   text-decoration: underline;
+}
+
+@media only screen and (max-width: 600px) {
+  .pages {
+    font-size: 18px;
+  }
+
 }

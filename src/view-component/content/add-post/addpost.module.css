@@ -2,17 +2,10 @@ p {
   cursor: pointer;
 }
 .myposts {
-  padding: 20px;
   display: block;
   text-align: center;
 }
 
 .splitedButtons {
   display: block;
-}
-
-button {
-  margin: 5px;
-  width: 80px;
-  display: inline;
 }

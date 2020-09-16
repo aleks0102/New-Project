@@ -10,7 +10,7 @@ const TextArea = (props) => {
 
   return (
     <div>
-      <p>{props.text}</p>
+      {props.text && <p>{props.text}</p>}
       <textarea
         name={props.name}
         value={props.value}

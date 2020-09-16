@@ -7,3 +7,12 @@
   color: white;
 
 }
+
+@media only screen and (max-width: 600px) {
+  .but {
+    width: 240px;
+    height: 40px;
+
+  }
+
+}

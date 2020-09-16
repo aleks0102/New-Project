@@ -8,8 +8,6 @@ const AvaModal = (props) => {
   const modal = document.querySelector(".app-wraper");
   const [profile, setProfile] = React.useState(props.profile);
 
-  console.log(profile)
-
   const saveAvatar = () => {
     saveProfile(profile)
       .then((response) => {

@@ -12,10 +12,11 @@ p {
 }
 
 .postsGrid{
+  background-color: rgb(230, 229, 229);
   display: grid;
   grid-template-areas: "i c";
   grid-template-columns: 8fr 4fr;
-  box-shadow: 10px 5px 5px grey;
+  box-shadow: 5px 5px 5px 5px grey;
   margin: 20px auto;
   padding: 10px;
   border-radius: 12px;

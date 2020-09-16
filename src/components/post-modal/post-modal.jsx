@@ -21,7 +21,7 @@ const PostModal = (props) => {
       <div className={style.modalWin} onClick={(e) => e.stopPropagation()}>
         <Components.Close onClick={props.onClick} />
         <h2> {props.title}</h2>
-        <Components.TextArea
+        <Components.Input
           onChange={(p) => getnewPost({ ...newPost, title: p })}
           value={newPost.title}
         />

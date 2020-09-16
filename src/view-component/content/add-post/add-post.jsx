@@ -13,7 +13,7 @@ const AddPost = (props) => {
 
   const savePost = () => {
     createPost(newPost)
-      .then((response) => props.setResponseMessage(true, "Post was saved"))
+      .then(() => props.setResponseMessage(true, "Post was saved"))
       .catch((err) => {
         catchError(err, props.setResponseMessage, props.endSession);
       });

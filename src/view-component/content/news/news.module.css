@@ -29,7 +29,12 @@
 }
 
 .newsItem {
-  padding-top: 10px;
+  padding: 5px;
+  background-color: rgb(230, 229, 229);
+  box-shadow: 5px 5px 5px 5px grey;
+
+  border-radius: 24px;
+  margin: 10px;
 }
 
 .readMore {

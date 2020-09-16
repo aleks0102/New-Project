@@ -24,6 +24,7 @@ import { InputFiles } from "./input-file/input-file";
 import ResponseMessage from "./message-modal/response-message";
 import EndSessionModal from "./end-session-modal/end-session-modal";
 import AddPost from "../view-component/content/add-post/add-post";
+import { Pagination } from "./pagination/pagination";
 
 const Components = {
   NewsModal,
@@ -50,7 +51,8 @@ const Components = {
   InputFiles,
   ResponseMessage,
   EndSessionModal,
-  AddPost
+  AddPost,
+  Pagination
 };
 
 export default Components;

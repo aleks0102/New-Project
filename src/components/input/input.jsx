@@ -10,7 +10,7 @@ const Input = (props) => {
 
   return (
     <div>
-      <label>{props.text}</label>
+      {props.text && <label>{props.text}</label>}
       <input
         name={props.name}
         type={props.type}

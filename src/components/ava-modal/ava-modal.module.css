@@ -5,10 +5,11 @@
   left: 0;
   right: 0;
   height: 100%;
-  display: block;
+  display: grid;
   justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  grid-template-columns: auto-fill;
+  background-color: rgba(0, 0, 0, 0.459);
+  overflow: auto;
 }
 
 .modalWin {
@@ -17,18 +18,34 @@
   background: #fff;
   display: block;
   min-height: 300px;
-  margin: 10px, auto;
-  padding: 40px;
-  position: fixed;
+  margin: auto;
   text-align: center;
-  top: 20%;
-  left: 33%;
+  position: relative;
+  top: 10%;
   width: 500px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  text-align: center;
+  padding: 10px;
 }
 
 img {
   width: 300px;
   height: 300px;
   border-radius: 100%;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .modalWin {
+    margin: 0;
+    width: 280px;
+    height: 400px;
+  }
+
+  
+img {
+  width: 250px;
+  height: 250px;
+  border-radius: 100%;
+}
 }

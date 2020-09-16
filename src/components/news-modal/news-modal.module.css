@@ -5,10 +5,11 @@
   left: 0;
   right: 0;
   height: 100%;
-  display: block;
+  display: grid;
   justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.041);
+  grid-template-columns: auto-fill;
+  background-color: rgba(0, 0, 0, 0.459);
+  overflow: auto;
 }
 
 .modalWin {
@@ -17,15 +18,24 @@
   background: #fff;
   display: block;
   min-height: 300px;
-  margin: 0, auto;
-  position: fixed;
-  top: 33%;
-  left: 33%;
+  margin: auto;
+  text-align: center;
+  position: relative;
+  top: 10%;
   width: 500px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   text-align: center;
+  padding: 10px;
 }
 
 h2 {
   padding-top: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  .modalWin {
+    margin: 0;
+    width: 300px;
+    height: 300px;
+  }
 }

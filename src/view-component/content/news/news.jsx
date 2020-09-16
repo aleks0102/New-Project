@@ -4,6 +4,7 @@ import NewsELement from "./news-element";
 import { getNews } from "../../../service/requests";
 import { useParams, NavLink } from "react-router-dom";
 import { divideArr } from "../../../service/serviceFunctions";
+import Components from "../../../components/components";
 
 const newsPerPage = 7;
 
@@ -45,17 +46,8 @@ export const News = () => {
             <NewsELement elem={elem} key={elem.id} />
           ))}
       </div>
-      <div className={style.pagination}>
-        {pages.map((page) => (
-          <NavLink
-            className={pageNo == page ? style.active : style.page}
-            key={page}
-            to={`/news/${page}`}
-          >
-            {page}
-          </NavLink>
-        ))}
-      </div>
+      
+      <Components.Pagination pageNo={pageNo} countOfPages={countOfPages}/>
     </div>
   );
 };

@@ -23,7 +23,7 @@ const Login = (props) => {
   return (
     <div className={style.login}>
       <div className={style.formBox}>
-        <h2>Login</h2>
+        <h4>Login</h4>
         <Components.Input
           text={"Username"}
           onChange={(p) => {

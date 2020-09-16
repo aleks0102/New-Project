@@ -1,30 +1,15 @@
 .form {
-  height: 100%;
-  padding: 10px;
   display: block;
   margin: 10px, auto;
-  padding: 40px;
   text-align: center;
 }
 
 .formGrid {
   display: grid;
-  grid-template-areas:
-    "left left"
-    "right right";
-  grid-template-columns: 6fr 6fr;
+  grid-template-columns: repeat(auto-fit, 320px);
+  justify-content: center;
   border-radius: 32px;
-  border: 1px solid grey;
-  padding: 20px 0;
-}
-
-.leftPart {
-  grid-area: "left";
-}
-
-.rightPart {
-  grid-area: "right";
-}
+ }
 
 .submit {
   display: block;

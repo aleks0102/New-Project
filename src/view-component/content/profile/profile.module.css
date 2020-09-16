@@ -1,19 +1,16 @@
 .info {
   display: grid;
-  grid-template-areas: "a d";
-  grid-template-columns: 6fr 6fr;
-  align-items: start;
+  grid-template-columns: repeat(auto-fit, 320px);
+  justify-content: center;
   text-align: center;
-  padding: 30px;
+  column-gap: 300px;
 }
 
 .data {
-  grid-area: "d";
   float: left;
 }
 
 .ava {
-  grid-area: "a";
   text-align: center;
 }
 

@@ -16,18 +16,11 @@ const Home = (props) => {
   }, []);
 
   return (
-    <div className={style.homepage}>
-      <div className={style.side}>
-        <h2>Last messages</h2>
-        <p>There will be messages soon</p>
-      </div>
-
-      <div className={style.main}>
-        <h2>Last posts</h2>
-        {props.posts.map((post) => (
-          <PostElement post={post} editable={false} key={post.id} />
-        ))}
-      </div>
+    <div className={style.main}>
+      <h2>Last posts</h2>
+      {props.posts.map((post) => (
+        <PostElement post={post} editable={false} key={post.id} />
+      ))}
     </div>
   );
 };

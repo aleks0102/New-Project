@@ -16,10 +16,16 @@
 }
 
 .formBox{
-  border: 1px solid grey;
-  width: 420px;
   display: block;
   margin: auto;
-  padding: 30px;
   border-radius: 32px;
+  padding: 10px 0;
+}
+
+@media only screen and (max-width: 600px) {
+  input {
+    width: 240px;
+    height: 30px;
+  }
+
 }
