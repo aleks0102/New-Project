@@ -4,6 +4,8 @@ p {
 .myposts {
   display: block;
   text-align: center;
+  color: RED;
+  text-align: center;
 }
 
 .splitedButtons {
