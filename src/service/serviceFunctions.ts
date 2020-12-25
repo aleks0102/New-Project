@@ -20,11 +20,5 @@ export const divideArr = (arr:any, contentPerPage:any) => {
   return allPages;
 };
 
-export const validateField = (e:any, required:any, style:any) => {
-  if (!e.target.value && required) {
-    e.target.classList = style.validate;
-  } else e.target.className = null;
-};
-
 export const capitalizeFirstLetter = (text:any) =>
   text[0].toUpperCase() + text.slice(1);

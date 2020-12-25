@@ -11,59 +11,55 @@ type EndSessionProps = {
   reload: boolean;
 };
 
-const EndSessionModal = (props: EndSessionProps) => {
-  const modalNew = document.querySelector(".app-wraper") as HTMLElement;
+const EndSessionModal: React.FC<EndSessionProps> = ({
+  showEndSession,
+  logIn,
+  reload,
+}) => {
   const [user, setUserData] = React.useState({
     username: loadUserName(),
     password: "",
   });
 
   const confirmPass = () => {
-    console.log("work");
-
     login(user)
       .then((response: any) => {
-        console.log(response);
-        props.logIn(true);
-        if (props.reload) window.location.reload();
+        logIn(true);
+        if (reload) window.location.reload();
         saveStatus(
           true,
           response.data.token,
           response.data.profile.id,
           response.data.username
         );
-        props.showEndSession(false);
+        showEndSession(false);
       })
       .catch(() => {
         closeWindow();
       });
   };
   const closeWindow = () => {
-    props.showEndSession(false);
-    props.logIn(false);
+    showEndSession(false);
+    logIn(false);
     saveStatus(false, null, null, null);
   };
 
-  return ReactDOM.createPortal(
-    <div className="modalBg" onClick={closeWindow}>
-      <div className="modalWin" onClick={(e) => e.stopPropagation()}>
-        <Components.Close onClick={closeWindow} />
-        <div className="logOut">
-          <h2>Session is over. Please, confirm password</h2>
-          <h3>{user.username}</h3>
-          <Components.Input
-            type="password"
-            text={"Your pass"}
-            onChange={(p: any) => {
-              setUserData({ ...user, password: p });
-            }}
-            value={user.password}
-          />
-          <Components.Button text="Log in" onClick={confirmPass} />
-        </div>
+  return (
+    <Components.ModalWindow closeWindow={closeWindow}>
+      <div className="logOut">
+        <h2>Session is over. Please, confirm password</h2>
+        <h3>{user.username}</h3>
+        <Components.Input
+          type="password"
+          text={"Your pass"}
+          onChange={(p: any) => {
+            setUserData({ ...user, password: p });
+          }}
+          value={user.password}
+        />
+        <Components.Button text="Log in" onClick={confirmPass} />
       </div>
-    </div>,
-    modalNew
+    </Components.ModalWindow>
   );
 };
 

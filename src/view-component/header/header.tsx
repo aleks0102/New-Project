@@ -8,7 +8,7 @@ type HeaderProps = {
   changeShow: Function;
 };
 
-export const Header = ({ isAuthorized, changeShow }: HeaderProps) => {
+export const Header: React.FC<HeaderProps> = ({ isAuthorized, changeShow }) => {
   const location = useLocation();
   return (
     <div className="pages">

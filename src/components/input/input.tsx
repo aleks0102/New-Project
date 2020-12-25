@@ -1,30 +1,29 @@
-import * as React from 'react'
+import * as React from "react";
 import "./input.css";
-import { validateField } from "../../service/serviceFunctions";
 
-interface Props {
+interface InputProps {
   onChange: Function;
   text: string;
   type: string;
   value: string | number | readonly string[] | undefined;
+  required?: boolean;
 }
 
-const Input = (props: Props) => {
-  const onChange = (e: any) => {
-    //  validateField(e, props.required, style);
-    props.onChange(e.target.value);
-  };
-
+const Input: React.FC<InputProps> = ({
+  onChange,
+  text,
+  type,
+  value,
+  required,
+}) => {
   return (
     <div>
-      {props.text && <label>{props.text}</label>}
+      {text && <label>{text}</label>}
       <input
-       // name={props.name}
-        type={props.type}
-        onChange={onChange}
-       // maxLength={props.maxLength}
-        value={props.value}
-        //onClick={(e) => validateField(e, props.required, style)}
+        type={type}
+        onChange={(e) => onChange(e.target.value)}
+        value={value}
+        className={!value && required ? "validate" : "not_validate"}
       />
     </div>
   );

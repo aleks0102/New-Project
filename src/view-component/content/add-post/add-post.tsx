@@ -9,7 +9,7 @@ type AddPostProps = {
   logIn: Function;
 };
 
-const AddPost = ({ isAuthorized, logIn }: AddPostProps) => {
+const AddPost: React.FC<AddPostProps> = ({ isAuthorized, logIn }) => {
   const [newPost, setNewPost] = React.useState({ title: "", content: "" });
   const [showEndSessionWindow, toggleEndSessionWindow] = React.useState(false);
   const [showMessage, toggleResponseShow] = React.useState(false);
@@ -18,13 +18,21 @@ const AddPost = ({ isAuthorized, logIn }: AddPostProps) => {
 
   const savePost = () => {
     createPost(newPost)
-      .then((response) => setResponseMessage(response.data.message))
-      .catch((err: any) => {
-        setResponseMessage(
-          err.response.data.title || err.response.data.message
-        );
+      .then((response) => {
+        setResponseMessage(response.data.message);
+        toggleResponseShow(true);
+      })
+
+      .catch((err) => {
+        if (err.response.status == 401) {
+          toggleEndSessionWindow(true);
+        } else {
+          setResponseMessage(
+            err.response.data.title || err.response.data.message
+          );
+          toggleResponseShow(true);
+        }
       });
-      toggleResponseShow(true);
 
     setNewPost({ ...newPost, title: "", content: "" });
   };
@@ -39,7 +47,7 @@ const AddPost = ({ isAuthorized, logIn }: AddPostProps) => {
       )}
       {showEndSessionWindow && (
         <Components.EndSessionModal
-          reload={true}
+          reload={false}
           logIn={(value: boolean) => logIn(value)}
           showEndSession={(value: boolean) => toggleEndSessionWindow(value)}
         />
@@ -52,19 +60,18 @@ const AddPost = ({ isAuthorized, logIn }: AddPostProps) => {
         text={"Post Title"}
         value={newPost.title}
         type="text"
+        required
       />
 
       <Components.TextArea
+        type="text"
         onChange={(p: any) => setNewPost({ ...newPost, content: p })}
         text={"Content"}
-        maxLength="200"
         value={newPost.content}
-        required
       />
       <Components.Button onClick={savePost} text={"Add"} />
     </div>
   );
 };
-
 
 export default AddPost;

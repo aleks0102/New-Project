@@ -1,32 +1,29 @@
-import * as React from 'react'
+import * as React from "react";
 import "./news.module.css";
 import Components from "../../../components/components";
 import { capitalizeFirstLetter } from "../../../service/serviceFunctions";
+import newsModel from "../../../models/newsModel";
 
-interface NewsElementProps{
-  id: number;
-  title: string;
-  body: string;
-};
+interface NewsElementProps {
+  elem: newsModel;
+}
 
-const NewsELement = ( props : NewsElementProps) => {
+const NewsELement: React.FC<NewsElementProps> = ({ elem }) => {
   const [isShowed, changeShow] = React.useState(false);
 
   return (
     <div className="newsItem">
-      <h4>{capitalizeFirstLetter(props.title)}</h4>
+      <h4>{capitalizeFirstLetter(elem.title)}</h4>
       <p className="show" onClick={() => changeShow(true)}>
-        {capitalizeFirstLetter(props.body.slice(0, 30) + "...")}
+        {capitalizeFirstLetter(elem.body.slice(0, 30) + "...")}
         <span className="readMore"> Read more</span>
       </p>
 
       {isShowed ? (
         <div>
           <Components.NewsModal
-            id={props.id}
-            title={props.title}
-            body={props.body}
-            onClick={() => changeShow(false)}
+            elem={elem}
+            closeWindow={() => changeShow(false)}
           />
         </div>
       ) : null}

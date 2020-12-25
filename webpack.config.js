@@ -1,13 +1,14 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.tsx",
-  devtool: 'inline-source-map',
+  devtool: "inline-source-map",
   output: {
     path: path.join(__dirname, "/dist"),
     filename: "index-bundle.js",
-    publicPath: '/'
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -26,10 +27,9 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
     ],
-
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: [".tsx", ".ts", ".js"],
   },
   devServer: {
     historyApiFallback: true,
@@ -38,5 +38,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
+    new CleanWebpackPlugin(),
   ],
 };

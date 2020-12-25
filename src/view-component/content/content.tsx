@@ -13,29 +13,41 @@ type ContentProps = {
   logIn: Function;
 };
 
-const Content = ({ isAuthorized, logIn }: ContentProps) => {
+const Content: React.FC<ContentProps> = ({ isAuthorized, logIn }) => {
   return (
     <Switch>
       <Route exact path="/">
-        <Home  />
+        <Home />
       </Route>
       <Route path="/add-post">
-        <AddPost isAuthorized={isAuthorized} logIn={(value:boolean) => logIn(value)} />
+        <AddPost
+          isAuthorized={isAuthorized}
+          logIn={(value: boolean) => logIn(value)}
+        />
       </Route>
       <Route path="/news/:pageNo">
         <News />
       </Route>
       <Route path="/profile">
-        <Profile isAuthorized={isAuthorized} logIn={(value:boolean) => logIn(value)} />
+        <Profile
+          isAuthorized={isAuthorized}
+          logIn={(value: boolean) => logIn(value)}
+        />
       </Route>
       <Route path="/login">
-        <Login isAuthorized={isAuthorized} logIn={(value:boolean) => logIn(value)} />
+        <Login
+          isAuthorized={isAuthorized}
+          logIn={(value: boolean) => logIn(value)}
+        />
       </Route>
       <Route path="/registration">
         <Registration />
       </Route>
       <Route path="/posts">
-        <MyPost logIn={(value:boolean) => logIn(value)} isAuthorized={isAuthorized} />
+        <MyPost
+          logIn={(value: boolean) => logIn(value)}
+          isAuthorized={isAuthorized}
+        />
       </Route>
     </Switch>
   );

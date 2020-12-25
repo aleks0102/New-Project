@@ -1,10 +1,15 @@
-import * as React from 'react'
-import   "./button.css";
+import * as React from "react";
+import "./button.css";
 
-const Button = (props:any) => {
+interface ButtonProps {
+  onClick: Function;
+  text: string;
+}
+
+const Button: React.FC<ButtonProps> = ({ onClick, text }) => {
   return (
-    <button className='but' onClick={props.onClick}>
-      {props.text}
+    <button className="but" onClick={() => onClick()}>
+      {text}
     </button>
   );
 };

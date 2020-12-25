@@ -1,32 +1,62 @@
 import * as React from "react";
 import "./mypost.css";
 import Components from "../../../components/components";
-import { deletePost, publishPost, catchError } from "../../../service/requests";
+import { deletePost, publishPost } from "../../../service/requests";
 import * as moment from "moment";
+import postModel from "../../../models/postModel";
+import { loadToken } from "../../../service/saveUserData";
 
-const PostElement = (props: any) => {
-  const [modal, toggleModal] = React.useState(false);
-  const post = props.post;
+interface PostElementProps {
+  post: postModel;
+  setPosts: Function;
+  editable: boolean;
+  setResponseMessage: Function;
+  toggleResponseShow?: Function;
+  showEndSession?: Function;
+}
 
+const PostElement: React.FC<PostElementProps> = ({
+  post,
+  setPosts,
+  editable,
+  toggleResponseShow,
+  setResponseMessage,
+  showEndSession,
+}) => {
+  const [showModal, toggleModal] = React.useState(false);
+  const token: string = loadToken();
   const onDelete = () => {
-    deletePost(props.post)
+    deletePost(post)
       .then((response) => {
-        props.setPosts();
-        props.setResponseMessage(true, response.data.message);
+        setPosts();
+        setResponseMessage(response.data.message);
       })
       .catch((err) => {
-        catchError(err, props.setResponseMessage, props.endSession, true);
+        if (err.response.status == 401) {
+          showEndSession(true);
+        } else {
+          setResponseMessage(
+            err.response.data.title || err.response.data.message
+          );
+          toggleResponseShow(true);
+        }
       });
   };
 
   const onPublish = () => {
-    publishPost(props.post)
+    publishPost(post)
       .then((response) => {
-        props.setPosts();
-        props.setResponseMessage(true, response.data.message);
+        setPosts();
+        setResponseMessage(response.data.message);
       })
       .catch((err) => {
-        catchError(err, props.setResponseMessage, props.endSession, true);
+        if (err.response.status == 401) {
+          showEndSession(true);
+        }
+        setResponseMessage(
+          err.response.data.title || err.response.data.message
+        );
+        toggleResponseShow(true);
       });
   };
 
@@ -35,15 +65,17 @@ const PostElement = (props: any) => {
       <div className={"postItem"}>
         <h4 onClick={() => toggleModal(true)}>{post.title}</h4>
         <p onClick={() => toggleModal(true)}>{post.content}</p>
-        {props.editable && modal && (
+        {editable && showModal && (
           <div>
             <Components.PostModal
-              setPosts={props.setPosts}
+              setPosts={setPosts}
               post={post}
-              onClick={() => toggleModal(false)}
-              token={props.token}
-              setResponseMessage={props.setResponseMessage}
-              endSession={props.endSession}
+              closeWindow={() => toggleModal(false)}
+              token={token}
+              setResponseMessage={setResponseMessage}
+              showEndSession={showEndSession}
+              toggleResponseShow={(value: boolean) => toggleResponseShow(value)}
+
             />
           </div>
         )}
@@ -54,10 +86,10 @@ const PostElement = (props: any) => {
         </span>
       </div>
       <div className={"postControls"}>
-        {props.editable && (
+        {editable && (
           <Components.SmallButton text="Delete" onClick={onDelete} />
         )}
-        {props.editable && !post.isPublished && (
+        {editable && !post.isPublished && (
           <Components.SmallButton text="Publish" onClick={onPublish} />
         )}
       </div>

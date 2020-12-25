@@ -7,7 +7,10 @@ type PaginationProps = {
   countOfPages: number;
 };
 
-export const Pagination = ({ pageNo, countOfPages }: PaginationProps) => {
+export const Pagination: React.FC<PaginationProps> = ({
+  pageNo,
+  countOfPages,
+}) => {
   const pages = [];
 
   for (let i = 1; i <= countOfPages; i++) {
@@ -15,7 +18,7 @@ export const Pagination = ({ pageNo, countOfPages }: PaginationProps) => {
   }
   return (
     <div className="paginationWrap">
-      <h3>Cтраница:</h3>
+      <h3>Page:</h3>
       <div className="pagination">
         {pages.map((page) => (
           <Link

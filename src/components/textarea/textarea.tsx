@@ -1,22 +1,28 @@
 import * as React from 'react'
 import   "./textarea.css";
-import { validateField } from "../../service/serviceFunctions";
 
-const TextArea = (props:any) => {
-  const onChange = (e:any) => {
+
+interface TextAreaProps {
+  onChange: Function;
+  text: string;
+  type: string;
+  value: string | number | readonly string[] | undefined;
+}
+
+
+const TextArea:React.FC<TextAreaProps> = ({onChange, text, type, value  }) => {
+  const ValidateValue = (e:any) => {
     // validateField(e, props.required, style);
-    props.onChange(e.target.value);
+    onChange(e.target.value);
   };
 
   return (
     <div>
-      {props.text && <p>{props.text}</p>}
+      {text && <p>{text}</p>}
       <textarea
-        name={props.name}
-        value={props.value}
+        value={value}
         // type={props.type}
-        onChange={onChange}
-        maxLength={props.maxLength}
+        onChange={ValidateValue}
         // onClick={(e) => validateField(e, props.required, style)}
       ></textarea>
     </div>

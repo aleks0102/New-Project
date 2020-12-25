@@ -1,4 +1,4 @@
-export const saveStatus = (isAuthorized:any, token:any, id:any, username:any) => {
+export const saveStatus = (isAuthorized:boolean, token:string, id:number, username:string) => {
   sessionStorage.setItem("isAuthorized", JSON.stringify(isAuthorized));
   sessionStorage.setItem("token", JSON.stringify(token));
   sessionStorage.setItem("currentId", JSON.stringify(id));

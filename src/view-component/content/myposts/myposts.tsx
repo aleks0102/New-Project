@@ -2,7 +2,7 @@ import * as React from "react";
 import "./mypost.css";
 import Components from "../../../components/components";
 import { Redirect } from "react-router-dom";
-import { loadPosts, catchError } from "../../../service/requests";
+import { loadPosts } from "../../../service/requests";
 import PostElement from "./post-element";
 
 type ProfileProps = {
@@ -10,8 +10,8 @@ type ProfileProps = {
   logIn: Function;
 };
 
-const MyPosts = ({ isAuthorized, logIn }: ProfileProps) => {
-  const [myPosts, setPosts] = React.useState([] as any[]);
+const MyPosts: React.FC<ProfileProps> = ({ isAuthorized, logIn }) => {
+  const [myPosts, setPosts] = React.useState([]);
 
   React.useEffect(() => {
     getPosts();
@@ -23,6 +23,9 @@ const MyPosts = ({ isAuthorized, logIn }: ProfileProps) => {
         setPosts(response.data);
       })
       .catch((err) => {
+        if (err.response.status == 401) {
+          toggleEndSessionWindow(true);
+        }
         setResponseMessage(
           err.response.data.title || err.response.data.message
         );
@@ -51,17 +54,7 @@ const MyPosts = ({ isAuthorized, logIn }: ProfileProps) => {
           showEndSession={(value: boolean) => toggleEndSessionWindow(value)}
         />
       )}
-      <div className={"sortPosts"}>
-        <Components.SmallButton
-           onClick={
-           () =>
-           //sortPosts(props.myPosts, props.sort, props.firstPostId)
-           console.log("Work")
-           }
-          text="Sort"
-        />
-      </div>
-      <h2 onClick={() => console.log(myPosts)}>Publications</h2>
+      <h2>Publications</h2>
       <div className={"postList"}>
         {myPosts.map((post) => (
           <PostElement
@@ -69,8 +62,9 @@ const MyPosts = ({ isAuthorized, logIn }: ProfileProps) => {
             key={post.id}
             setPosts={getPosts}
             editable={true}
-            // endSession={props.endSession}
-            // setResponseMessage={props.setResponseMessage}
+            showEndSession={(value: boolean) => toggleEndSessionWindow(value)}
+            setResponseMessage={(value: string) => setResponseMessage(value)}
+            toggleResponseShow={(value: boolean) => toggleResponseShow(value)}
           />
         ))}
       </div>

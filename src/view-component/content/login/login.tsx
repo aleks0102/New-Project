@@ -10,23 +10,23 @@ type LoginProps = {
   logIn: Function;
 };
 
-const Login = (props: LoginProps) => {
+const Login: React.FC<LoginProps> = ({ isAuthorized, logIn }) => {
   const [user, getUserData] = React.useState({ username: "", password: "" });
   const [responseMessage, setResponseMessage] = React.useState("");
   const [showMessage, toggleShow] = React.useState(false);
 
   const onLogin = () => {
     login(user)
-      .then((response: any) => {
+      .then((response) => {
         saveStatus(
           true,
           response.data.token,
           response.data.profile.id,
           response.data.username
         );
-        props.logIn(true);
+        logIn(true);
       })
-      .catch((err: any) => {
+      .catch((err) => {
         setResponseMessage(
           err.response.data.title || err.response.data.message
         );
@@ -34,7 +34,7 @@ const Login = (props: LoginProps) => {
       });
   };
 
-  if (props.isAuthorized) return <Redirect to="/profile" />;
+  if (isAuthorized) return <Redirect to="/profile" />;
 
   return (
     <div className="login">
@@ -45,7 +45,7 @@ const Login = (props: LoginProps) => {
         />
       )}
       <div className="formBox">
-        <h4>Login</h4>
+        <h2>Login</h2>
         <Components.Input
           text={"Username"}
           onChange={(p: string) => {

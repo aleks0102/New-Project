@@ -1,45 +1,62 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import   "./ava-modal.css";
+import * as React from "react";
+import "./ava-modal.css";
 import Components from "../components";
-import { saveProfile, catchError } from "../../service/requests";
+import { saveProfile } from "../../service/requests";
+import profileModel from "../../models/profileModel";
 
-const AvaModal = (props:any) => {
-  const modal:any = document.querySelector(".app-wraper");
-  const [profile, setProfile] = React.useState(props.profile);
+interface AvaModalProps {
+  closeWindow: Function;
+  profileData: profileModel;
+  setCurrentProfile: Function;
+  setResponseMessage: Function;
+  toggleResponseShow: Function;
+  showEndSession: Function;
+}
+
+const AvaModal: React.FC<AvaModalProps> = ({
+  closeWindow,
+  profileData,
+  setCurrentProfile,
+  setResponseMessage,
+  toggleResponseShow,
+  showEndSession,
+}) => {
+  const [profile, setProfile] = React.useState(profileData);
 
   const saveAvatar = () => {
     saveProfile(profile)
-      .then((response:any) => {
-        props.setResponseMessage(true, response.data.message);
-        props.setCurrentProfile();
+      .then((response) => {
+        setResponseMessage(true, response.data.message);
+        setCurrentProfile();
+        toggleResponseShow(true);
       })
-      .catch((err:any) => {
-        catchError(err, props.setResponseMessage, props.endSession, false);
+      .catch((err) => {
+        if (err.response.status == 401) {
+          showEndSession(true);
+        }
+        setResponseMessage(
+          err.response.data.title || err.response.data.message
+        );
+        toggleResponseShow(true);
       });
-    props.setCurrentProfile();
   };
 
   const deleteAvatar = () => {
-    setProfile({ ...profile, photo: null });
+    setProfile({ ...profile, photo: "" });
   };
 
-  return ReactDOM.createPortal(
-    <div className='modalBg' onClick={props.onClick}>
-      <div className='modalWin' onClick={(e) => e.stopPropagation()}>
-        <Components.Close onClick={props.onClick} />
-        <Components.Ava avatar={profile.photo} />
-        <Components.InputFiles
-          onChange={(e:any) => {
-            setProfile({ ...profile, photo: e });
-          }}
-          setResponseMessage={props.setResponseMessage}
-        />
-        <Components.SmallButton onClick={saveAvatar} text="save" />
-        <Components.SmallButton onClick={deleteAvatar} text="delete" />
-      </div>
-    </div>,
-    modal
+  return (
+    <Components.ModalWindow closeWindow={closeWindow}>
+      <Components.Ava avatar={profile.photo} />
+      <Components.InputFiles
+        loadPhoto={(e: any) => {
+          setProfile({ ...profile, photo: e });
+        }}
+        setResponseMessage={setResponseMessage}
+      />
+      <Components.SmallButton onClick={saveAvatar} text="save" />
+      <Components.SmallButton onClick={deleteAvatar} text="delete" />
+    </Components.ModalWindow>
   );
 };
 

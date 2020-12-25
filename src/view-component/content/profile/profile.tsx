@@ -3,16 +3,26 @@ import "./profile.module.css";
 import Components from "../../../components/components";
 import { Redirect } from "react-router-dom";
 import { getProfile, saveProfile } from "../../../service/requests";
+import profileModel from "../../../models/profileModel";
 
 type ProfileProps = {
   isAuthorized: boolean;
   logIn: Function;
 };
 
-const Profile = ({ isAuthorized, logIn }: ProfileProps) => {
+const Profile: React.FC<ProfileProps> = ({ isAuthorized, logIn }) => {
+  if (!isAuthorized) return <Redirect to="/login" />;
+
   React.useEffect(() => {
     setCurrentProfile();
   }, []);
+
+  const [profile, setProfile] = React.useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    photo: "",
+  });
 
   const [showEndSessionWindow, toggleEndSessionWindow] = React.useState(false);
   const [avaModalShow, toggleAvaWindowShow] = React.useState(false);
@@ -21,10 +31,29 @@ const Profile = ({ isAuthorized, logIn }: ProfileProps) => {
 
   const setCurrentProfile = () => {
     getProfile()
-      .then((response: any) => {
+      .then((response) => {
         setProfile(response.data);
       })
-      .catch((err: any) => {
+      .catch((err) => {
+        if (err.response.status == 401) {
+          toggleEndSessionWindow(true);
+        } else {
+          setResponseMessage(
+            err.response.data.title || err.response.data.message
+          );
+          toggleResponseShow(true);
+        }
+      });
+  };
+
+  const changeProfile = () => {
+    saveProfile(profile)
+      .then((response) => {
+        setResponseMessage(response.data.message);
+        toggleResponseShow(true);
+      })
+
+      .catch((err) => {
         if (err.response.status == 401) {
           toggleEndSessionWindow(true);
         }
@@ -33,27 +62,6 @@ const Profile = ({ isAuthorized, logIn }: ProfileProps) => {
         );
         toggleResponseShow(true);
       });
-  };
-  if (!isAuthorized) return <Redirect to="/login" />;
-
-  const [profile, setProfile] = React.useState({
-    firstName: null,
-    lastName: null,
-    phone: null,
-    photo: null,
-  });
-
-  const changeProfile = () => {
-    saveProfile(profile)
-      .then((response: any) => {
-        setResponseMessage(response.data.message);
-      })
-      .catch((err: any) => {
-        setResponseMessage(
-          err.response.data.title || err.response.data.message
-        );
-      });
-    toggleResponseShow(true);
   };
 
   return (
@@ -66,14 +74,16 @@ const Profile = ({ isAuthorized, logIn }: ProfileProps) => {
       )}
       {avaModalShow && (
         <Components.AvaModal
-          onClick={() => toggleAvaWindowShow(false)}
-          profile={profile}
+          closeWindow={() => toggleAvaWindowShow(false)}
+          profileData={profile}
           setCurrentProfile={setCurrentProfile}
-        />
+          showEndSession={(value: boolean) => toggleEndSessionWindow(value)}
+          setResponseMessage={(value: string) => setResponseMessage(value)}
+          toggleResponseShow={(value: boolean) => toggleResponseShow(value)}        />
       )}
       {showEndSessionWindow && (
         <Components.EndSessionModal
-          reload={true}
+          reload={false}
           logIn={(value: boolean) => logIn(value)}
           showEndSession={(value: boolean) => toggleEndSessionWindow(value)}
         />
@@ -95,18 +105,21 @@ const Profile = ({ isAuthorized, logIn }: ProfileProps) => {
           text="Name"
           value={profile.firstName}
           type="text"
+          required
         />
         <Components.Input
           onChange={(p: string) => setProfile({ ...profile, lastName: p })}
           text={"Last name"}
           value={profile.lastName}
           type="text"
+          required
         />
         <Components.Input
           onChange={(p: string) => setProfile({ ...profile, phone: p })}
           text={"Phone"}
           value={profile.phone}
           type="text"
+          required
         />
         <Components.Button text={"Save"} onClick={changeProfile} />
       </div>

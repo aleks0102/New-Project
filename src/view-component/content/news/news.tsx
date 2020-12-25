@@ -1,18 +1,18 @@
 import * as React from "react";
 import "./news.module.css";
 import NewsELement from "./news-element";
-import { catchError, getNews } from "../../../service/requests";
+import { getNews } from "../../../service/requests";
 import { useParams } from "react-router-dom";
 import { divideArr } from "../../../service/serviceFunctions";
 import Components from "../../../components/components";
 
+interface ParamTypes {
+  pageNo: string;
+}
+
 const newsPerPage = 7;
 
-export const News = (props: any) => {
-  const [news, setNews] = React.useState([]);
-  const { pageNo }: any = useParams();
-  const [responseMessage, setResponseMessage] = React.useState("");
-  const [showMessage, toggleShow] = React.useState(false);
+export const News: React.FC<{}> = () => {
   React.useEffect(() => {
     if (!news.length)
       getNews()
@@ -21,9 +21,14 @@ export const News = (props: any) => {
           setResponseMessage(
             err.response.data.title || err.response.data.message
           );
+          toggleShow(true);
         });
-    toggleShow(true);
   }, []);
+
+  const [news, setNews] = React.useState([]);
+  const { pageNo } = useParams<ParamTypes>();
+  const [responseMessage, setResponseMessage] = React.useState("");
+  const [showMessage, toggleShow] = React.useState(false);
 
   const countOfPages = React.useMemo(() => {
     return Math.ceil(news.length / newsPerPage);
@@ -32,8 +37,6 @@ export const News = (props: any) => {
   const dividedNews = React.useMemo(() => {
     return divideArr(news, newsPerPage);
   }, [news, newsPerPage]);
-
-  console.log(dividedNews);
 
   const pages = [];
   for (let i = 1; i <= countOfPages; i++) {
@@ -51,18 +54,16 @@ export const News = (props: any) => {
       <h2>Last news:</h2>
       <h2>{pageNo}</h2>
       <div>
-        {!!dividedNews[pageNo - 1] &&
-          dividedNews[pageNo - 1].map((elem) => (
-            <NewsELement
-              id={elem.id}
-              title={elem.title}
-              body={elem.body}
-              key={elem.id}
-            />
+        {!!dividedNews[Number(pageNo) - 1] &&
+          dividedNews[Number(pageNo) - 1].map((elem) => (
+            <NewsELement elem={elem} key={elem.id} />
           ))}
       </div>
 
-      <Components.Pagination pageNo={pageNo} countOfPages={countOfPages} />
+      <Components.Pagination
+        pageNo={Number(pageNo)}
+        countOfPages={countOfPages}
+      />
     </div>
   );
 };

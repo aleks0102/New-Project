@@ -7,8 +7,11 @@ type ResponseMessageProps = {
   text: string;
 };
 
-const ResponseMessage = ({ closeWindow, text }: ResponseMessageProps) => {
-  const message: any = document.querySelector(".app-wraper");
+const ResponseMessage: React.FC<ResponseMessageProps> = ({
+  closeWindow,
+  text,
+}) => {
+  const message: HTMLElement = document.querySelector(".app-wraper");
 
   React.useEffect(() => {
     setTimeout(closeWindow, 3000);
